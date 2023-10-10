@@ -2,9 +2,10 @@
 import { Product as IProduct } from "../interfaces/Product";
 import ProductForList from "./ProductForList";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import Cookies from "js-cookie";
 
 const fetchItems = async (): Promise<IProduct[]> => {
-    // console.log(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}`);
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/`);
     const jsonResponse: IProduct[] = await response.json();
     return jsonResponse;
@@ -13,8 +14,11 @@ const fetchItems = async (): Promise<IProduct[]> => {
 export default function ProductList() {
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<IProduct[]>();
+    const [accessToken, setAccessToken] = useState("");
 
     useEffect(() => {
+        const accessTokenCookie = Cookies.get("access_token");
+        if (accessTokenCookie) setAccessToken(accessTokenCookie);
         async function getItems() {
             const items = await fetchItems();
             setProducts(items);
@@ -42,6 +46,16 @@ export default function ProductList() {
                     }}
                 />
             ))}
+            {accessToken ? (
+                <Link
+                    href="/add-product"
+                    className="flex flex-col justify-center items-center p-1 shadow rounded-lg cursor-pointer duration-300 dark:border-0 dark:bg-stone-900 hover:bg-stone-200/[0.3] dark:hover:bg-stone-800"
+                >
+                    + Add Product +
+                </Link>
+            ) : (
+                <></>
+            )}
         </div>
     );
 }

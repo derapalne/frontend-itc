@@ -28,7 +28,7 @@ const submitForm = async (
     }
     if (jsonResponse.access_token) {
         Cookies.set("access_token", jsonResponse.access_token, { expires: 1 / 24 / 6 });
-        Cookies.set("user_data", JSON.stringify(jsonResponse.userData));
+        Cookies.set("user_data", JSON.stringify(jsonResponse.userData), { expires: 1 / 24 / 6 });
         setWarningMessage("");
         return true;
     }

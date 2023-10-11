@@ -1,10 +1,11 @@
 import { Brand } from "./Brand";
 
 export interface Product {
-    id: number;
+    id?: number;
     name: string;
     image_url: string;
     description: string;
     price: number;
-    brand: Brand;
+    brand?: Brand;
+    brand_id?: number;
 }

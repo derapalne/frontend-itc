@@ -13,14 +13,13 @@ const submitForm = async (username: string, password: string, setWarningMessage:
         body: JSON.stringify({ username: username, password: password }),
     });
     const jsonResponse = await response.json();
-    console.log(jsonResponse);
     if (jsonResponse.status === 500 || jsonResponse.status === 403) {
         setWarningMessage(jsonResponse.message);
         return false;
     }
     if (jsonResponse.access_token) {
         Cookies.set("access_token", jsonResponse.access_token, { expires: 1 / 24 / 6 });
-        Cookies.set("user_data", JSON.stringify(jsonResponse.userData));
+        Cookies.set("user_data", JSON.stringify(jsonResponse.userData), { expires: 1 / 24 / 6 });
         setWarningMessage("");
         return true;
     }

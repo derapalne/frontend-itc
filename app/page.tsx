@@ -1,10 +1,13 @@
-import Image from "next/image";
-import ProductList from "./components/ProductList";
+import Link from "next/link"
+import Header from "./components/Header";
 
 export default function Home() {
     return (
-        <main className="">
-            <ProductList></ProductList>
-        </main>
+        <>
+            <Header />
+            <main className="w-7/12 mx-auto text-center">
+                <Link className="text-lg font-bold underline" href="/products">Go to Products</Link>
+            </main>
+        </>
     );
 }

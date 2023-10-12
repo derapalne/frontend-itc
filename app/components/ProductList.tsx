@@ -29,27 +29,31 @@ export default function ProductList() {
 
     if (isLoading) return <div className="w-9/12 mx-auto text-center">Loading Products...</div>;
 
-    if (!products) return <div>No products!!</div>;
-
     return (
         <div className="grid grid-cols-4 gap-2 w-9/12 mx-auto">
-            {products.map((p) => (
-                <ProductForList
-                    key={p.id}
-                    params={{
-                        id: p.id,
-                        name: p.name,
-                        description: p.description,
-                        image_url: p.image_url,
-                        price: p.price,
-                        brand: p.brand,
-                    }}
-                />
-            ))}
+            {(!products || products.length === 0) && (
+                <div className="col-span-4 w-9/12 mx-auto text-center">
+                    No products found! {!accessToken && `Login to add one.`}
+                </div>
+            )}
+            {products &&
+                products.map((p) => (
+                    <ProductForList
+                        key={p.id}
+                        params={{
+                            id: p.id,
+                            name: p.name,
+                            description: p.description,
+                            image_url: p.image_url,
+                            price: p.price,
+                            brand: p.brand,
+                        }}
+                    />
+                ))}
             {accessToken ? (
                 <Link
                     href="/add-product"
-                    className="flex flex-col justify-center items-center p-1 shadow rounded-lg cursor-pointer duration-300 dark:border-0 dark:bg-stone-900 hover:bg-stone-200/[0.3] dark:hover:bg-stone-800"
+                    className="flex flex-col justify-center items-center min-h-[70px] p-1 shadow rounded-lg cursor-pointer duration-300 dark:border-0 dark:bg-stone-900 hover:bg-stone-200/[0.3] dark:hover:bg-stone-800"
                 >
                     + Add Product +
                 </Link>

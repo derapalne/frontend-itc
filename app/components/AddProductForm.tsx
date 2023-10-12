@@ -115,6 +115,7 @@ export default function AddProductForm() {
                                 <h4 className="mt-2 text-sm">{b.name}</h4>
                             </div>
                         ))}
+                        {(!brands || brands.length === 0) && <div className="col-span-4">No brands found! Please populate the database.</div>}
                 </div>
             </div>
 

@@ -11,7 +11,7 @@ export default function ProductForList({ params }: { params: IProduct }) {
     else brand = params.brand;
     return (
         <Link
-            className="flex flex-col p-1 shadow rounded-lg cursor-pointer duration-300 dark:border-0 dark:bg-stone-900 hover:bg-stone-200/[0.3] dark:hover:bg-stone-800"
+            className="flex flex-col p-4 shadow rounded-lg cursor-pointer duration-300 dark:border-0 dark:bg-stone-900 hover:bg-stone-200/[0.3] dark:hover:bg-stone-800"
             href={`/products/${id}`}
         >
             <div className="mx-auto object-center relative h-28 w-28">

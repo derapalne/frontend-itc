@@ -2,13 +2,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Cookies from "js-cookie";
-
-type UserData = {
-    username: string;
-};
+import { UserData as IUserData } from "../interfaces/UserData";
 
 export default function Header() {
-    const [userData, setUserData] = useState<UserData>();
+    const [userData, setUserData] = useState<IUserData>();
     useEffect(() => {
         const userDataCookie = Cookies.get("user_data");
         if (userDataCookie) setUserData(JSON.parse(userDataCookie ? userDataCookie : ""));

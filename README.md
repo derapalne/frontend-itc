@@ -7,6 +7,13 @@ Made with Next.js in Typescript.<br/>
 You can see the products in /products, and their description in /products/(id).<br/>
 You can Sign Up and create an account, if you log in you'll be able to add, edit and remove products.<br/>
 
+## To run the code:
+```bash
+npm i // To install all dependencies
+npm run build // To complie the project
+npm run start // To run the project
+```
+
 ## Routes
 
 /products -> See all products<br/>

@@ -53,7 +53,7 @@ export default function Product({ params }: { params: IProduct }) {
             <p className="text-end font-bold mr-8">${price}</p>
             {accessToken ? (
                 <button
-                    className="m-auto p-2 rounded duration-300 bg-stone-200/[0.5] hover:bg-stone-300 dark:hover:bg-stone-400 dark:bg-stone-600"
+                    className="m-auto p-2 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                     onClick={handleEditButtonClick}
                 >
                     Edit Product

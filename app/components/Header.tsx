@@ -11,7 +11,7 @@ export default function Header() {
         if (userDataCookie) setUserData(JSON.parse(userDataCookie ? userDataCookie : ""));
     }, []);
     return (
-        <header className="flex flex-row justify-around py-10 border-2 mb-8 border-stone-100 border-b-stone-200 dark:border-black dark:border-b-stone-800 dark:bg-stone-700 ">
+        <header className="flex flex-row justify-around py-10 w-full border-2 border-stone-100 border-b-orange-400 bg-stone-50 dark:border-black dark:border-b-orange-600 dark:bg-stone-800 ">
             <h2 className="font-bold text-lg">Free Shopping</h2>
             <ul className="flex flex-row justify-around font-light dark:font-thin">
                 <li className="mx-4 hover:font-normal duration-300">

@@ -148,7 +148,7 @@ export default function EditProductForm({ params }: { params: IProduct }) {
     }
 
     return (
-        <form className="flex flex-col p-4 border-2 border-slate-100 shadow dark:border-0 dark:bg-stone-900 rounded-lg">
+        <form className="flex flex-col items-center w-11/12 md:w-10/12 mx-auto p-4 border-2 border-slate-100 shadow dark:border-0 dark:bg-stone-900 rounded-lg">
             <h2 className="font-bold text-xl">Add Product</h2>
             <div className="mt-4">
                 <h4>Select brand:</h4>
@@ -226,7 +226,7 @@ export default function EditProductForm({ params }: { params: IProduct }) {
             </div>
             <div>
                 <button
-                    className="m-auto p-2 rounded duration-300 bg-stone-200/[0.5] hover:bg-stone-300 dark:hover:bg-stone-400 dark:bg-stone-600"
+                    className="m-auto p-2 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                     onClick={handleSubmit}
                 >
                     Update Product
@@ -234,7 +234,7 @@ export default function EditProductForm({ params }: { params: IProduct }) {
             </div>
             <div>
                 <button
-                    className="mx-auto mt-4 p-2 rounded duration-300 bg-rose-300 hover:bg-rose-500 dark:hover:bg-rose-500 dark:bg-rose-600"
+                    className="mx-auto mt-4 p-2 rounded duration-300 bg-red-300 hover:bg-red-500 dark:hover:bg-red-500 dark:bg-red-600"
                     onClick={handleDeleteClick}
                 >
                     {deleteButtonText}

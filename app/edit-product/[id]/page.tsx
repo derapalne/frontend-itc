@@ -28,36 +28,36 @@ export default function Products() {
 
     if (isLoading)
         return (
-            <div className="bg-stone-100 dark:bg-black">
+            <>
                 <Header />
-                <main className="">
+                <main className="h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
                     <div className="w-7/12 mx-auto text-center">
                         <h3 className="">Loading product data...</h3>
                     </div>
                 </main>
-            </div>
+            </>
         );
 
     if (!product)
         return (
-            <div className="bg-stone-100 dark:bg-black">
+            <>
                 <Header />
-                <main className="">
+                <main className="h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
                     <div className="w-7/12 mx-auto text-center">
                         <h3>No product found!</h3>
                     </div>
                 </main>
-            </div>
+            </>
         );
 
     return (
-        <div className="bg-stone-100 dark:bg-black">
+        <>
             <Header />
-            <main className="">
-                <div className="w-7/12 mx-auto text-center">
-                    <EditProductForm params={product}/>
+            <main className="h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
+                <div className="w-full mx-auto text-center">
+                    <EditProductForm params={product} />
                 </div>
             </main>
-        </div>
+        </>
     );
 }

@@ -5,7 +5,7 @@ export default function AddProductPage() {
     return (
         <>
             <Header />
-            <main className="w-7/12 mx-auto text-center">
+            <main className="h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
                 <AddProductForm></AddProductForm>
             </main>
         </>

@@ -65,14 +65,14 @@ export default function SignupForm() {
     }
 
     return (
-        <form className="flex flex-col p-4 border-2 border-slate-100 shadow dark:border-0 dark:bg-stone-900 rounded-lg">
-            <h2 className="font-bold text-xl">Login</h2>
+        <form className="flex flex-col items-center w-11/12 md:w-7/12 mx-auto p-4 border-2 border-slate-100 shadow dark:border-0 dark:bg-stone-900 rounded-lg">
+            <h2 className="font-bold text-xl">Sign Up</h2>
             <div className="my-4 grid grid-cols-2">
                 <label className="text-end mx-4" htmlFor="username">
                     Username:
                 </label>
                 <input
-                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-10/12 sm:w-8/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="username"
                     type="text"
                     placeholder="Your username"
@@ -84,7 +84,7 @@ export default function SignupForm() {
                     Password:
                 </label>
                 <input
-                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-10/12 sm:w-8/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="password"
                     type="password"
                     placeholder="Your password"
@@ -96,7 +96,7 @@ export default function SignupForm() {
                     Confirm Password:
                 </label>
                 <input
-                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-10/12 sm:w-8/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="password"
                     type="password"
                     placeholder="Confirm password"
@@ -108,7 +108,7 @@ export default function SignupForm() {
             </div>
             <div>
                 <button
-                    className="m-auto p-2 rounded duration-300 bg-stone-200/[0.5] hover:bg-stone-300 dark:hover:bg-stone-400 dark:bg-stone-600"
+                    className="m-auto p-2 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                     onClick={handleSubmit}
                 >
                     Sign Up
@@ -117,7 +117,7 @@ export default function SignupForm() {
             <div className="mt-8 text-sm">
                 <p>
                     Already have an account?{" "}
-                    <Link href="/login" className="font-bold underline">
+                    <Link href="/login" className="font-bold underline text-orange-400 dark:text-orange-500">
                         Log in
                     </Link>
                     .{" "}

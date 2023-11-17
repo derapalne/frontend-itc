@@ -97,10 +97,10 @@ export default function AddProductForm() {
     }
 
     return (
-        <form className="flex flex-col p-4 border-2 border-slate-100 shadow dark:border-0 dark:bg-stone-900 rounded-lg">
+        <form className="flex flex-col items-center w-11/12 md:w-10/12 mx-auto p-4 border-2 border-slate-100 shadow dark:border-0 dark:bg-stone-900 rounded-lg">
             <h2 className="font-bold text-xl">Add Product</h2>
             <div className="mt-4">
-                <h4>Select brand:</h4>
+                <h4 className="text-center">Select brand:</h4>
                 <div className="my-4 mx-auto grid grid-cols-4 w-10/12">
                     {brands &&
                         brands.map((b) => (
@@ -112,7 +112,7 @@ export default function AddProductForm() {
                                 onClick={() => handleBrandSelection(b.id)}
                             >
                                 <Image src={b.logo_url} alt={b.name} width={50} height={50} />
-                                <h4 className="mt-2 text-sm">{b.name}</h4>
+                                <h4 className="mt-2 text-sm text-center">{b.name}</h4>
                             </div>
                         ))}
                         {(!brands || brands.length === 0) && <div className="col-span-4">No brands found! Please populate the database.</div>}
@@ -124,7 +124,7 @@ export default function AddProductForm() {
                     Name:
                 </label>
                 <input
-                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-10/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="username"
                     type="text"
                     placeholder="Product Name"
@@ -137,7 +137,7 @@ export default function AddProductForm() {
                     Description:
                 </label>
                 <textarea
-                    className="w-8/12 h-24 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-11/12 h-24 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="description"
                     rows={3}
                     placeholder="Product description"
@@ -150,7 +150,7 @@ export default function AddProductForm() {
                     Image Url:
                 </label>
                 <input
-                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-10/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="image_url"
                     type="text"
                     placeholder="Product Image (URL)"
@@ -163,7 +163,7 @@ export default function AddProductForm() {
                     Price:
                 </label>
                 <input
-                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-10/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="price"
                     type="number"
                     placeholder="1, 500, 12345"
@@ -176,7 +176,7 @@ export default function AddProductForm() {
             </div>
             <div>
                 <button
-                    className="m-auto p-2 rounded duration-300 bg-stone-200/[0.5] hover:bg-stone-300 dark:hover:bg-stone-400 dark:bg-stone-600"
+                    className="m-auto p-2 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                     onClick={handleSubmit}
                 >
                     Add Product

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Product from "../../components/Product";
 import { Product as IProduct } from "../../interfaces/Product";
 import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/${id}`);
@@ -27,36 +28,39 @@ export default function Products() {
 
     if (isLoading)
         return (
-            <div className="bg-stone-100 dark:bg-black">
+            <>
                 <Header />
-                <main className="">
-                    <div className="w-7/12 mx-auto text-center">
+                <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
+                    <div className="w-7/12 pt-4 mx-auto text-center">
                         <h3 className="">Loading product data...</h3>
                     </div>
                 </main>
-            </div>
+                <Footer />
+            </>
         );
 
     if (!product)
         return (
-            <div className="bg-stone-100 dark:bg-black">
+            <>
                 <Header />
-                <main className="">
+                <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
                     <div className="w-7/12 mx-auto">
                         <h3>No product found!</h3>
                     </div>
                 </main>
-            </div>
+                <Footer />
+            </>
         );
 
     return (
-        <div className="bg-stone-100 dark:bg-black">
+        <>
             <Header />
-            <main className="">
-                <div className="w-7/12 mx-auto">
+            <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
+                <div className="w-7/12 pt-4 mx-auto">
                     <Product params={product} />
                 </div>
             </main>
-        </div>
+            <Footer />
+        </>
     );
 }

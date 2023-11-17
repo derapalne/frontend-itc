@@ -1,16 +1,17 @@
 import Header from "../components/Header";
-import LoginForm from "../components/LoginForm";
+import Footer from "../components/Footer";
 import SignupForm from "../components/SignupForm";
 
 export default function SignupPage() {
     return (
         <>
             <Header />
-            <main>
-                <div className="w-7/12 mx-auto text-center">
+            <main className="h-screen w-full sm:w-5/6 pt-4 mx-auto bg-stone-50 dark:bg-stone-950">
+                <div>
                     <SignupForm></SignupForm>
                 </div>
             </main>
+            <Footer />
         </>
     );
 }

@@ -5,6 +5,7 @@ import Product from "../../components/Product";
 import { Product as IProduct } from "../../interfaces/Product";
 import Header from "@/app/components/Header";
 import EditProductForm from "@/app/components/EditProductForm";
+import Footer from "@/app/components/Footer";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/${id}`);
@@ -35,6 +36,7 @@ export default function Products() {
                         <h3 className="">Loading product data...</h3>
                     </div>
                 </main>
+                <Footer />
             </>
         );
 
@@ -47,6 +49,7 @@ export default function Products() {
                         <h3>No product found!</h3>
                     </div>
                 </main>
+                <Footer />
             </>
         );
 
@@ -58,6 +61,7 @@ export default function Products() {
                     <EditProductForm params={product} />
                 </div>
             </main>
+            <Footer />
         </>
     );
 }

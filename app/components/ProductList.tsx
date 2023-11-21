@@ -27,13 +27,22 @@ export default function ProductList() {
         const fakeCache = setTimeout(getItems, Math.random() * 2000 + 500);
     }, []);
 
-    if (isLoading) return <div className="w-11/12 py-4 mx-auto text-center">Loading Products...</div>;
+    if (isLoading)
+        return <div className="w-11/12 py-4 mx-auto text-center opacity-40">Loading Products...</div>;
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-11/12 py-4 mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-11/12 pt-4 mx-auto">
             {(!products || products.length === 0) && (
                 <div className="col-span-4 w-9/12 mx-auto text-center">
-                    No products found! {!accessToken && `Login to add one.`}
+                    <p className="opacity-40">
+                        No products found! {!accessToken && `Login to add one.`}
+                        <Link
+                            href="/initialize"
+                            className="mx-2 font-medium hover:underline hover:font-semibold"
+                        >
+                            Click here to initialize database
+                        </Link>
+                    </p>
                 </div>
             )}
             {products &&

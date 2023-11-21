@@ -5,6 +5,10 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'pics.freeicons.io'
+            },
+            {
+                protocol: 'https',
+                hostname: 'icons8.com'
             }
         ]
     }

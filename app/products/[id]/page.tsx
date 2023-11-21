@@ -31,7 +31,7 @@ export default function Products() {
             <>
                 <Header />
                 <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
-                    <div className="w-7/12 pt-4 mx-auto text-center">
+                    <div className="w-7/12 pt-4 mx-auto text-center opacity-40">
                         <h3 className="">Loading product data...</h3>
                     </div>
                 </main>

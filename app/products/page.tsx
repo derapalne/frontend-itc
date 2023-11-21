@@ -7,7 +7,7 @@ export default function Products() {
         <>
             <Header />
             <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
-                <h4 className="mx-auto text-center pt-4">Listing: All Products</h4>
+                <h4 className="mx-auto text-center pt-4">Listing: All Products (Add filters here)</h4>
                 <ProductList></ProductList>
             </main>
             <Footer />

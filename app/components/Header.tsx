@@ -12,7 +12,9 @@ export default function Header() {
     }, []);
     return (
         <header className="flex flex-row justify-around py-10 w-full border-2 border-stone-100 border-b-orange-400 bg-stone-50 dark:border-black dark:border-b-orange-600 dark:bg-stone-800 ">
-            <h2 className="font-bold text-lg">Free Shopping</h2>
+            <h2 className="font-bold text-lg">
+                <Link href="/">Free Shopping</Link>
+            </h2>
             <ul className="flex flex-row justify-around font-light dark:font-thin">
                 <li className="mx-4 hover:font-normal duration-300">
                     <Link href="/products">Products</Link>
@@ -20,6 +22,14 @@ export default function Header() {
                 {userData ? (
                     <li>
                         <span>Hello, {userData.username}!</span>
+                    </li>
+                ) : (
+                    ``
+                )}
+
+                {userData?.isAdmin ? (
+                    <li className="mx-4 hover:font-normal duration-300">
+                        <Link href="/admin">Admin Tab</Link>
                     </li>
                 ) : (
                     ``

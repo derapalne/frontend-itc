@@ -13,29 +13,41 @@ async function fetchRandomProduct(): Promise<IProduct> {
 
 export default function LandingPage() {
     const [product, setProduct] = useState<IProduct>();
+    const [errorFetching, setErrorFetching] = useState(false);
 
     useEffect(() => {
         async function getRandomProduct() {
-            const randomProduct = await fetchRandomProduct();
-            setProduct(randomProduct);
+            try {
+                const randomProduct = await fetchRandomProduct();
+                setProduct(randomProduct);
+            } catch (error) {
+                setErrorFetching(true);
+            }
         }
         getRandomProduct();
-    }, []);
+    }, [errorFetching]);
 
     const productElement = product ? (
         <ProductForList params={product}></ProductForList>
     ) : (
         <div className="text-center">
-            <h4>Loading Product...</h4>
-            <p className="opacity-40">
-                Don&apos;t find any products?
-                <Link
-                    href="/initialize"
-                    className="mx-2 font-medium hover:underline hover:font-semibold"
-                >
-                    Click here to initialize database
-                </Link>
-            </p>
+            {!errorFetching && <h4>Loading Product...</h4>}
+            {errorFetching ? (
+                <p className="opacity-40">
+                    {" "}
+                    There was an error fetching from the database, please try again later
+                </p>
+            ) : (
+                <p className="opacity-40">
+                    Don&apos;t find any products?
+                    <Link
+                        href="/initialize"
+                        className="mx-2 font-medium hover:underline hover:font-semibold"
+                    >
+                        Click here to initialize database
+                    </Link>
+                </p>
+            )}
         </div>
     );
 

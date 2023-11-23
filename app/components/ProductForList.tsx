@@ -15,7 +15,13 @@ export default function ProductForList({ params }: { params: IProduct }) {
             href={`/products/${id}`}
         >
             <div className="mx-auto object-center relative h-28 w-28">
-                <Image src={image_url} alt={name} className="dark:invert" width={96} height={96} />
+                <Image
+                    src={image_url}
+                    alt={name}
+                    className={image_url.startsWith("https://pics.freeicons") ? "dark:invert" : "mt-4 object-cover"}
+                    width={96}
+                    height={96}
+                />
                 <Image
                     src={brand.logo_url}
                     alt={brand.name}

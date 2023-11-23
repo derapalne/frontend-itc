@@ -14,6 +14,7 @@ const fetchBrands = async (): Promise<IBrand[]> => {
 
 const submitProduct = async (
     product: IProduct,
+    image: File,
     accessToken: string,
     setWarningMessage: Function
 ) => {
@@ -27,14 +28,30 @@ const submitProduct = async (
     });
     const jsonResponse = await response.json();
     console.log(jsonResponse);
-    if (jsonResponse.status === 500 || jsonResponse.status === 403) {
+    if (jsonResponse.status === 500 || jsonResponse.status === 403 || !jsonResponse.id) {
         setWarningMessage(jsonResponse.message);
         return false;
     }
-    if (jsonResponse.id) {
-        setWarningMessage("");
-        return true;
+    const formData = new FormData();
+    formData.append("image", image);
+    const imageResponse = await fetch(
+        `${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/${jsonResponse.id}/image`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: formData,
+        }
+    );
+    const jsonImageResponse = await imageResponse.json();
+    console.log(jsonImageResponse);
+    if (jsonImageResponse.error) {
+        setWarningMessage(jsonImageResponse.message);
+        return false;
     }
+    setWarningMessage("");
+    return true;
 };
 
 export default function AddProductForm() {
@@ -42,6 +59,7 @@ export default function AddProductForm() {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [image, setImage] = useState<File>();
     const [price, setPrice] = useState(0);
     const [warningMessage, setWarningMessage] = useState("");
     const [brands, setBrands] = useState<IBrand[]>();
@@ -74,6 +92,13 @@ export default function AddProductForm() {
         setImageUrl(ev.currentTarget.value);
     }
 
+    function handlImageChange(ev: React.FormEvent<HTMLInputElement>) {
+        const images = ev.currentTarget.files;
+        if (!images) return;
+        const image = images.item(0);
+        if (image) setImage(image);
+    }
+
     function handlPriceChange(ev: React.FormEvent<HTMLInputElement>) {
         setPrice(parseInt(ev.currentTarget.value));
     }
@@ -84,7 +109,8 @@ export default function AddProductForm() {
         if (!name) return setWarningMessage("Please enter a name");
         if (!description) return setWarningMessage("Please enter a description");
         if (!price) return setWarningMessage("Please enter a price");
-        if (!imageUrl) return setWarningMessage("Please enter an image url");
+        // if (!imageUrl) return setWarningMessage("Please enter an image url");
+        if (!image) return setWarningMessage("Please provide an image");
         const product: IProduct = {
             name: name,
             description: description,
@@ -92,7 +118,7 @@ export default function AddProductForm() {
             price: price,
             brand_id: selectedBrandId,
         };
-        const added = await submitProduct(product, accessToken, setWarningMessage);
+        const added = await submitProduct(product, image, accessToken, setWarningMessage);
         if (added) router.push("/products");
     }
 
@@ -115,7 +141,11 @@ export default function AddProductForm() {
                                 <h4 className="mt-2 text-sm text-center">{b.name}</h4>
                             </div>
                         ))}
-                        {(!brands || brands.length === 0) && <div className="col-span-4">No brands found! Please populate the database.</div>}
+                    {(!brands || brands.length === 0) && (
+                        <div className="col-span-4">
+                            No brands found! Please populate the database.
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -145,7 +175,7 @@ export default function AddProductForm() {
                     onChange={handleDescriptionChange}
                 />
             </div>
-            <div className="my-4 grid grid-cols-2">
+            {/*<div className="my-4 grid grid-cols-2">
                 <label className="text-end mx-4" htmlFor="image_url">
                     Image Url:
                 </label>
@@ -156,6 +186,19 @@ export default function AddProductForm() {
                     placeholder="Product Image (URL)"
                     value={imageUrl}
                     onChange={handlImageUrlChange}
+                />
+            </div> */}
+            <div className="my-4 grid grid-cols-2">
+                <label className="text-end mx-4" htmlFor="image_url">
+                    Image:
+                </label>
+                <input
+                    className="w-10/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    name="image"
+                    type="file"
+                    placeholder="Product Image (URL)"
+                    accept="image/*"
+                    onChange={handlImageChange}
                 />
             </div>
             <div className="my-4 grid grid-cols-2">

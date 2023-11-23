@@ -13,6 +13,7 @@ const fetchItems = async (): Promise<IProduct[]> => {
 
 export default function ProductList() {
     const [isLoading, setIsLoading] = useState(true);
+    const [errorFetching, setErrorFetching] = useState(false);
     const [products, setProducts] = useState<IProduct[]>();
     const [accessToken, setAccessToken] = useState("");
 
@@ -20,15 +21,28 @@ export default function ProductList() {
         const accessTokenCookie = Cookies.get("access_token");
         if (accessTokenCookie) setAccessToken(accessTokenCookie);
         async function getItems() {
-            const items = await fetchItems();
-            setProducts(items);
-            setIsLoading(false);
+            try {
+                const items = await fetchItems();
+                setProducts(items);
+                setIsLoading(false);
+            } catch (error) {
+                setErrorFetching(true);
+            }
         }
         const fakeCache = setTimeout(getItems, Math.random() * 2000 + 500);
     }, []);
 
+    if (errorFetching)
+        return (
+            <div className="w-11/12 py-4 mx-auto text-center opacity-40">
+                There was an error fetching the products, please try again later.
+            </div>
+        );
+
     if (isLoading)
-        return <div className="w-11/12 py-4 mx-auto text-center opacity-40">Loading Products...</div>;
+        return (
+            <div className="w-11/12 py-4 mx-auto text-center opacity-40">Loading Products...</div>
+        );
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-11/12 pt-4 mx-auto">

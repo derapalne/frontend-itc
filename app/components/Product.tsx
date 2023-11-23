@@ -23,16 +23,16 @@ export default function Product({ params }: { params: IProduct }) {
     function handleEditButtonClick() {
         router.push(`/edit-product/${id}`);
     }
-
+    
     return (
         <div className="flex flex-col p-4 border-2 border-slate-100 shadow dark:border-0 dark:bg-stone-900 rounded-lg">
             <div className="mx-auto object-center relative h-32 w-40">
                 <Image
                     src={image_url}
                     alt={name}
-                    className="dark:invert"
-                    width={128}
-                    height={128}
+                    className={image_url.startsWith("https://pics.freeicons") ? "dark:invert" : "object-cover"}
+                    width={256}
+                    height={256}
                 />
                 <Image
                     src={brand.logo_url}

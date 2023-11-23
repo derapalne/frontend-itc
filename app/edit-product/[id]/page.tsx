@@ -1,7 +1,8 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Product from "../../components/Product";
+import Cookies from "js-cookie";
 import { Product as IProduct } from "../../interfaces/Product";
 import Header from "@/app/components/Header";
 import EditProductForm from "@/app/components/EditProductForm";
@@ -14,9 +15,16 @@ const fetchProductData = async (id: number): Promise<IProduct> => {
 };
 
 export default function Products() {
+    const router = useRouter();
+
     const productId = parseInt(usePathname().split("/")[2]);
     const [product, setProduct] = useState<IProduct>();
     const [isLoading, setIsLoading] = useState(true);
+    const [accessToken, setAccessToken] = useState("");
+
+    const accessTokenCookie = Cookies.get("access_token");
+    if (accessTokenCookie) setAccessToken(accessTokenCookie);
+    if (!accessToken) router.push("/products");
 
     useEffect(() => {
         async function getProductData() {

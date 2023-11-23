@@ -3,15 +3,19 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: 'https',
-                hostname: 'pics.freeicons.io'
+                protocol: "https",
+                hostname: "pics.freeicons.io",
             },
             {
-                protocol: 'https',
-                hostname: 'icons8.com'
-            }
-        ]
-    }
-}
+                protocol: "https",
+                hostname: "icons8.com",
+            },
+            {
+                protocol: "http",
+                hostname: "localhost",
+            },
+        ],
+    },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

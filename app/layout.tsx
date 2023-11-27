@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body
                 className={
                     roboto.className +
-                    " bg-gradient-to-b from-stone-100 to-stone-200 dark:bg-gradient-to-b dark:from-stone-900 dark:to-stone-950 flex flex-col h-full"
+                    " bg-orange-400 dark:bg-gradient-to-b dark:from-stone-900 dark:to-stone-950 flex flex-col h-full"
                 }
             >
                 {children}

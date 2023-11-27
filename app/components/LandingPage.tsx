@@ -65,7 +65,7 @@ export default function LandingPage() {
                     >
                         Felipe Simón Roselló
                     </Link>
-                    &apos;s JS portfolio page.
+                    &apos;s interactive portfolio page.
                 </h3>
                 <p className="w-10/12 ml-auto text-center">
                     Made with

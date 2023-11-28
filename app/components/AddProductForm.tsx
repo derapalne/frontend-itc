@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Product as IProduct } from "../interfaces/Product";
+import { CreateProduct } from "../interfaces/Product";
 import { Brand as IBrand } from "../interfaces/Brand";
 import Image from "next/image";
 
@@ -13,7 +13,7 @@ const fetchBrands = async (): Promise<IBrand[]> => {
 };
 
 const submitProduct = async (
-    product: IProduct,
+    product: CreateProduct,
     image: File,
     accessToken: string,
     setWarningMessage: Function
@@ -111,7 +111,7 @@ export default function AddProductForm() {
         if (!price) return setWarningMessage("Please enter a price");
         // if (!imageUrl) return setWarningMessage("Please enter an image url");
         if (!image) return setWarningMessage("Please provide an image");
-        const product: IProduct = {
+        const product: CreateProduct = {
             name: name,
             description: description,
             image_url: imageUrl,

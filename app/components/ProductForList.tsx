@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function ProductForList({ params }: { params: IProduct }) {
-    const { id, name, image_url, price } = params;
+    const { id, name, image_url, price, user } = params;
     let brand: IBrand;
     if (!params.brand) brand = { id: 0, name: "", logo_url: "" };
     else brand = params.brand;
@@ -18,7 +18,11 @@ export default function ProductForList({ params }: { params: IProduct }) {
                 <Image
                     src={image_url}
                     alt={name}
-                    className={image_url.startsWith("https://pics.freeicons") ? "dark:invert" : "mt-4 object-cover"}
+                    className={
+                        image_url.startsWith("https://pics.freeicons")
+                            ? "dark:invert"
+                            : "mt-4 object-cover"
+                    }
                     width={96}
                     height={96}
                 />
@@ -33,7 +37,10 @@ export default function ProductForList({ params }: { params: IProduct }) {
             <h3 className="grow">
                 {name} <u className="text-sm no-underline opacity-70">- {brand.name}</u>
             </h3>
-            <p className="text-end font-bold">${price}</p>
+            <div>
+                <p className="text-start font-light text-xs">{user.username} ({user.n_products})</p>
+                <p className="text-end font-bold">${price}</p>
+            </div>
         </Link>
     );
 }

@@ -69,7 +69,10 @@ export default function ProductList() {
                             description: p.description,
                             image_url: p.image_url,
                             price: p.price,
+                            brand_id: p.brand_id,
                             brand: p.brand,
+                            creator_user_id: p.creator_user_id,
+                            user: p.user,
                         }}
                     />
                 ))}

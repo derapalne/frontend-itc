@@ -7,6 +7,7 @@ import { Product as IProduct } from "../../interfaces/Product";
 import Header from "@/app/components/Header";
 import EditProductForm from "@/app/components/EditProductForm";
 import Footer from "@/app/components/Footer";
+import { UserData } from "@/app/interfaces/UserData";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/${id}`);
@@ -14,17 +15,28 @@ const fetchProductData = async (id: number): Promise<IProduct> => {
     return jsonResponse;
 };
 
-export default function Products() {
+export default function EditProductPage() {
     const router = useRouter();
 
     const productId = parseInt(usePathname().split("/")[2]);
     const [product, setProduct] = useState<IProduct>();
     const [isLoading, setIsLoading] = useState(true);
     const [accessToken, setAccessToken] = useState("");
+    const [activeUserData, setActiveUserData] = useState<UserData>();
 
     const accessTokenCookie = Cookies.get("access_token");
-    if (accessTokenCookie) setAccessToken(accessTokenCookie);
-    if (!accessToken) router.push("/products");
+    if (!accessToken && accessTokenCookie) setAccessToken(accessTokenCookie);
+
+    const activeUserDataCookie = Cookies.get("user_data");
+    if (!activeUserData && activeUserDataCookie) setActiveUserData(JSON.parse(activeUserDataCookie));
+
+    if (
+        !accessToken ||
+        (activeUserData && product && activeUserData.id !== product.creator_user_id)
+    ) {
+        router.push("/products");
+        // console.log("should redirect");
+    }
 
     useEffect(() => {
         async function getProductData() {

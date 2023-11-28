@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Product as IProduct } from "../interfaces/Product";
+import { UpdateProduct as IProduct } from "../interfaces/Product";
 import { Brand as IBrand } from "../interfaces/Brand";
 import Image from "next/image";
 

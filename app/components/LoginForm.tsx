@@ -72,8 +72,8 @@ export default function LoginForm() {
                     onChange={handlePasswordChange}
                 />
             </div>
-            <div>
-                <span className="text-rose-500">{warningMessage}</span>
+            <div className="mb-2">
+                <span className=" text-rose-500">{warningMessage}</span>
             </div>
             <div>
                 <button

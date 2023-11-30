@@ -1,15 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-async function postInitialization(accessToken: string) {
-    console.log(accessToken);
+async function postInitialization() {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/init`, {
         method: "POST",
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
     });
     const jsonResponse = await response.json();
     return jsonResponse;
@@ -17,21 +12,16 @@ async function postInitialization(accessToken: string) {
 
 export default function InitializePage() {
     const [firstRender, setFirstRender] = useState(true);
-    const [accessToken, setAccessToken] = useState("");
     const router = useRouter();
 
-    useEffect(() => {
-        const accessTokenCookie = Cookies.get("access_token");
-        if (accessTokenCookie) setAccessToken(accessTokenCookie);
-    }, []);
-
     async function initialize() {
-        const response = await postInitialization(accessToken);
+        const response = await postInitialization();
         console.log(response);
         router.push("/products");
     }
 
-    if (firstRender && accessToken) {
+    if (firstRender) {
+        console.log("initializing...");
         initialize();
         setFirstRender(false);
     }

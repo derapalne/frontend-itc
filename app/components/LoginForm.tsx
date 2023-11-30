@@ -1,10 +1,16 @@
 "use client";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const submitForm = async (username: string, password: string, setWarningMessage: Function) => {
+const submitForm = async (
+    username: string,
+    password: string,
+    setWarningMessage: Dispatch<SetStateAction<string>>,
+    setIsFetching: Dispatch<SetStateAction<boolean>>
+) => {
+    setIsFetching(true);
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/auth/login`, {
         method: "POST",
         headers: {
@@ -14,6 +20,7 @@ const submitForm = async (username: string, password: string, setWarningMessage:
     });
     const jsonResponse = await response.json();
     if (jsonResponse.status === 500 || jsonResponse.status === 403) {
+        setIsFetching(false);
         setWarningMessage(jsonResponse.message);
         return false;
     }
@@ -21,6 +28,7 @@ const submitForm = async (username: string, password: string, setWarningMessage:
         Cookies.set("access_token", jsonResponse.access_token, { expires: 1 / 24 / 6 });
         Cookies.set("user_data", JSON.stringify(jsonResponse.userData), { expires: 1 / 24 / 6 });
         setWarningMessage("");
+        setIsFetching(false);
         return true;
     }
 };
@@ -30,6 +38,7 @@ export default function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [warningMessage, setWarningMessage] = useState("");
+    const [isFetching, setIsFetching] = useState(false);
 
     function handleUsernameChange(ev: React.FormEvent<HTMLInputElement>) {
         setUsername(ev.currentTarget.value);
@@ -41,7 +50,7 @@ export default function LoginForm() {
 
     async function handleSubmit(ev: React.FormEvent<HTMLButtonElement>) {
         ev.preventDefault();
-        const logged = await submitForm(username, password, setWarningMessage);
+        const logged = await submitForm(username, password, setWarningMessage, setIsFetching);
         if (logged) router.push("/products");
     }
 
@@ -80,13 +89,16 @@ export default function LoginForm() {
                     className="m-auto p-2 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                     onClick={handleSubmit}
                 >
-                    Log In
+                    {isFetching ? <p className="px-8 animate-spin">↻</p> : 'Log In'}
                 </button>
             </div>
             <div className="mt-8 text-sm">
                 <p>
                     Don&apos;t have an account?{" "}
-                    <Link href="/signup" className="font-bold underline text-orange-400 dark:text-orange-500">
+                    <Link
+                        href="/signup"
+                        className="font-bold underline text-orange-400 dark:text-orange-500"
+                    >
                         Sign up
                     </Link>
                     .{" "}

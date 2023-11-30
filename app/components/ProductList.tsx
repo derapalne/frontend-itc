@@ -45,7 +45,7 @@ export default function ProductList() {
         );
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-11/12 pt-4 mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-9/12 sm:w-11/12 pt-4 mx-auto">
             {(!products || products.length === 0) && (
                 <div className="col-span-4 w-9/12 mx-auto text-center">
                     <p className="opacity-40">

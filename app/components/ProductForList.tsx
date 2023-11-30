@@ -21,7 +21,7 @@ export default function ProductForList({ params }: { params: IProduct }) {
                     className={
                         image_url.startsWith("https://pics.freeicons")
                             ? "dark:invert"
-                            : "mt-4 object-cover"
+                            : "mt-4 max-h-24 object-cover"
                     }
                     width={96}
                     height={96}

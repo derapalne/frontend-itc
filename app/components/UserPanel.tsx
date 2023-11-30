@@ -20,7 +20,7 @@ export default function UserPanel({ params }: { params: { user: IUser; ownProfil
                     </span>
                 )}
             </div>
-            <div className="my-2 grid grid-cols-2">
+            <div className="my-2 grid grid-cols-1 sm:grid-cols-2">
                 {products?.map((p) => (
                     <ProductForList
                         key={p.id}

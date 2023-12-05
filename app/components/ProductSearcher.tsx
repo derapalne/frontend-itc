@@ -1,10 +1,19 @@
-import { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { SearchFilter } from "../interfaces/Filter";
 import { Brand as IBrand } from "../interfaces/Brand";
+import { IProductListing } from "../interfaces/Product";
 
 const fetchBrands = async (): Promise<IBrand[]> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/brands/`);
     const jsonResponse: IBrand[] = await response.json();
+    return jsonResponse;
+};
+
+const fetchProductListing = async (value: string): Promise<IProductListing[]> => {
+    const response = await fetch(
+        `${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/listing?n=${value}&l=4`
+    );
+    const jsonResponse: IProductListing[] = await response.json();
     return jsonResponse;
 };
 
@@ -18,32 +27,40 @@ export default function ProductSearcher({
     const [displayText, setDisplayText] = useState("All Products");
     const [searchValue, setSearchValue] = useState("");
     // This is for only sending data when Enter is pressed
-    const [alreadyFetchedValue, setAlreadyFetchedValue] = useState(false);
+    const [fetchNewProducts, setFetchNewProducts] = useState(true);
     const [brandFilter, setBrandFilter] = useState(defaultBrandValue);
     // Initialize with default value
     const [brands, setBrands] = useState<IBrand[]>([
         { id: 0, name: defaultBrandValue, logo_url: "" },
     ]);
 
+    const [productSuggestions, setProductSuggestions] = useState<IProductListing[]>();
+    const [fetchNewSuggestions, setFetchNewSuggestions] = useState(false);
+
+    const [showFilters, setShowFilters] = useState(false);
+    const [showEnterButton, setShowEnterButton] = useState(false);
+
     function handleSearchValueChange(ev: FormEvent<HTMLInputElement>) {
         ev.preventDefault();
         setSearchValue(ev.currentTarget.value);
+        setFetchNewSuggestions(true);
+        setShowEnterButton(true);
     }
 
     function handleSearchKeyDown(ev: React.KeyboardEvent<HTMLInputElement>) {
-        if (ev.key === "Enter") setAlreadyFetchedValue(false);
+        if (ev.key === "Enter") setFetchNewProducts(true);
     }
 
     function handleBrandNameChange(ev: React.ChangeEvent<HTMLSelectElement>) {
         ev.preventDefault();
         setBrandFilter(ev.currentTarget.value);
-        setAlreadyFetchedValue(false);
+        setFetchNewProducts(true);
     }
 
     useEffect(() => {
         // For adding/removing filters to the search and sending the request
         // to the parent component
-        if (!alreadyFetchedValue) {
+        if (fetchNewProducts) {
             const filters: SearchFilter[] = [];
             if (brandFilter) filters.push({ filter: "brand", value: brandFilter });
             params.searchProductsWithFilters(searchValue, filters);
@@ -55,7 +72,8 @@ export default function ProductSearcher({
                     }`
                 );
             } else setDisplayText("All Products");
-            setAlreadyFetchedValue(true);
+            setShowEnterButton(false);
+            setFetchNewProducts(false);
         }
         // Fetch Brands
         async function getBrands() {
@@ -65,40 +83,109 @@ export default function ProductSearcher({
         }
         // Only if Brands are not present (only once)
         if (brands.length === 1) getBrands();
-    }, [alreadyFetchedValue, params, searchValue, brandFilter, brands]);
+        // For fetching suggestions
+        async function getSuggestions() {
+            const fetchedProducts = await fetchProductListing(searchValue);
+            console.log(fetchedProducts);
+            setProductSuggestions(fetchedProducts);
+            setFetchNewSuggestions(false);
+        }
+        if (fetchNewSuggestions) getSuggestions();
+        if (searchValue.length === 0) setProductSuggestions([]);
+    }, [fetchNewProducts, params, searchValue, brandFilter, brands, fetchNewSuggestions]);
+
+    function handleShowFiltersButtonClick(ev: React.MouseEvent<HTMLButtonElement>) {
+        setShowFilters(!showFilters);
+    }
+
+    function handleEnterButtonClick(ev: React.MouseEvent<HTMLButtonElement>) {
+        setProductSuggestions([]);
+        setFetchNewProducts(true);
+    }
+
+    function handleSuggestionClick(ev: React.MouseEvent<HTMLLIElement>) {
+        setProductSuggestions([]);
+        setSearchValue(ev.currentTarget.innerText);
+        setFetchNewProducts(true);
+    }
 
     return (
         <div className="my-4 text-center">
             <div>
-                <label className="mr-2" htmlFor="search">
-                    🔎
-                </label>
-                <input
-                    className="mx-auto bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
-                    name="search"
-                    type="text"
-                    value={searchValue}
-                    onChange={handleSearchValueChange}
-                    onKeyDown={handleSearchKeyDown}
-                />
-                <label className="ml-2 opacity-60" htmlFor="brand">
-                    Brand:
-                </label>
-                <select
-                    className="mx-auto bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
-                    name="brand"
-                    value={brandFilter}
-                    onChange={handleBrandNameChange}
-                >
-                    {brands &&
-                        brands.map((b) => {
-                            return (
-                                <option key={b.id} value={b.name}>
-                                    {b.name}
-                                </option>
-                            );
-                        })}
-                </select>
+                <div className="mx-auto mb-2 w-72 overflow-clip">
+                    <div className="text-left bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700">
+                        <label className="mr-1" htmlFor="search">
+                            🔎
+                        </label>
+                        <input
+                            className="w-10/12 bg-stone-100 dark:bg-stone-900 focus-visible:border-0"
+                            name="search"
+                            type="text"
+                            value={searchValue}
+                            onChange={handleSearchValueChange}
+                            onKeyDown={handleSearchKeyDown}
+                        />
+                        {showEnterButton && (
+                            <button
+                                className="text-orange-400 hover:text-orange-500 dark:hover:text-orange-400 dark:text-orange-500"
+                                onClick={handleEnterButtonClick}
+                            >
+                                ▶
+                            </button>
+                        )}
+                    </div>
+                    <div className="absolute w-72 z-10">
+                        <div>
+                            <ul className="flex flex-col">
+                                {productSuggestions &&
+                                    productSuggestions.map((p) => (
+                                        <li
+                                            className="pl-8 whitespace-nowrap overflow-hidden text-ellipsis text-left cursor-default bg-stone-100 dark:bg-stone-900 hover:bg-stone-200 hover:dark:bg-stone-800"
+                                            key={p.id}
+                                            onClick={handleSuggestionClick}
+                                        >
+                                            {p.name.toLocaleLowerCase()}
+                                        </li>
+                                    ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {showFilters ? (
+                    <div className="mt-2">
+                        <button
+                            className="ml-4 p-1 text-sm rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
+                            onClick={handleShowFiltersButtonClick}
+                        >
+                            Hide Filters
+                        </button>
+                        <label className="ml-2 opacity-60" htmlFor="brand">
+                            Brand:
+                        </label>
+                        <select
+                            className="mx-auto bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                            name="brand"
+                            value={brandFilter}
+                            onChange={handleBrandNameChange}
+                        >
+                            {brands &&
+                                brands.map((b) => {
+                                    return (
+                                        <option key={b.id} value={b.name}>
+                                            {b.name}
+                                        </option>
+                                    );
+                                })}
+                        </select>
+                    </div>
+                ) : (
+                    <button
+                        className="ml-4 p-1 text-sm rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
+                        onClick={handleShowFiltersButtonClick}
+                    >
+                        Show Filters
+                    </button>
+                )}
             </div>
             <h4 className="mx-auto text-center pt-4 opacity-50">Listing: {displayText}</h4>
         </div>

@@ -31,6 +31,11 @@ export interface Product {
     user: IUser;
 }
 
+export interface IProductListing {
+    id: number;
+    name: string;
+}
+
 export interface ProductUserPage {
     id: number;
     name: string;

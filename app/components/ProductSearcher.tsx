@@ -38,7 +38,6 @@ export default function ProductSearcher({
     const [productSuggestions, setProductSuggestions] = useState<IProductListing[]>([]);
     const [fetchNewSuggestions, setFetchNewSuggestions] = useState(false);
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0);
-    const [selectedSuggestionValue, setSelectedSuggestionValue] = useState("");
 
     const [showFilters, setShowFilters] = useState(false);
     const [showEnterButton, setShowEnterButton] = useState(false);

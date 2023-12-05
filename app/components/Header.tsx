@@ -8,11 +8,13 @@ import { useTheme } from "next-themes";
 export default function Header() {
     const [userData, setUserData] = useState<IUserData>();
     const { theme, setTheme } = useTheme();
+    const [frontendTheme, setFrontendTheme] = useState("");
 
     useEffect(() => {
         const userDataCookie = Cookies.get("user_data");
         if (userDataCookie) setUserData(JSON.parse(userDataCookie ? userDataCookie : ""));
-    }, []);
+        setFrontendTheme(theme ? theme : "");
+    }, [theme]);
 
     function handleDarkModeToggle() {
         setTheme(theme === "dark" ? "light" : "dark");
@@ -55,7 +57,7 @@ export default function Header() {
                     title="Toggle Dark Mode"
                     onClick={handleDarkModeToggle}
                 >
-                    {theme === "light" ? `🌑` : `🌕`}
+                    {frontendTheme === "light" ? `🌑` : `🌕`}
                 </li>
             </ul>
         </header>

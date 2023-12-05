@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Product as IProduct } from "../interfaces/Product";
 import { useEffect, useState } from "react";
 import ProductForList from "./ProductForList";
+import { useRouter } from "next/navigation";
 
 async function fetchRandomProduct(): Promise<IProduct> {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/random`);
@@ -35,7 +36,7 @@ export default function LandingPage() {
             {errorFetching ? (
                 <p className="opacity-40">
                     {" "}
-                    There was an error fetching from the database, please try again later
+                    There was an error fetching from the database, please try <Link className="font-bold hover:underline hover:font-semibold" href="/initialize">initializing it</Link>.
                 </p>
             ) : (
                 <p className="opacity-40">

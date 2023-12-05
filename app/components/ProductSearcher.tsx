@@ -28,14 +28,17 @@ export default function ProductSearcher({
     const [searchValue, setSearchValue] = useState("");
     // This is for only sending data when Enter is pressed
     const [fetchNewProducts, setFetchNewProducts] = useState(true);
-    const [brandFilter, setBrandFilter] = useState(defaultBrandValue);
     // Initialize with default value
     const [brands, setBrands] = useState<IBrand[]>([
         { id: 0, name: defaultBrandValue, logo_url: "" },
     ]);
-
-    const [productSuggestions, setProductSuggestions] = useState<IProductListing[]>();
+    // For filtering brands
+    const [brandFilter, setBrandFilter] = useState(defaultBrandValue);
+    // Product Suggestions
+    const [productSuggestions, setProductSuggestions] = useState<IProductListing[]>([]);
     const [fetchNewSuggestions, setFetchNewSuggestions] = useState(false);
+    const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0);
+    const [selectedSuggestionValue, setSelectedSuggestionValue] = useState("");
 
     const [showFilters, setShowFilters] = useState(false);
     const [showEnterButton, setShowEnterButton] = useState(false);
@@ -48,7 +51,25 @@ export default function ProductSearcher({
     }
 
     function handleSearchKeyDown(ev: React.KeyboardEvent<HTMLInputElement>) {
-        if (ev.key === "Enter") setFetchNewProducts(true);
+        if (ev.key === "Enter") {
+            if (selectedSuggestionIndex !== 0)
+                setSearchValue(productSuggestions[selectedSuggestionIndex - 1].name.toLowerCase());
+            setFetchNewProducts(true);
+        }
+        if (ev.key === "ArrowDown") {
+            ev.preventDefault();
+            setSelectedSuggestionIndex(
+                selectedSuggestionIndex < productSuggestions?.length
+                    ? selectedSuggestionIndex + 1
+                    : selectedSuggestionIndex
+            );
+        }
+        if (ev.key === "ArrowUp") {
+            ev.preventDefault();
+            setSelectedSuggestionIndex(
+                selectedSuggestionIndex > 1 ? selectedSuggestionIndex - 1 : selectedSuggestionIndex
+            );
+        }
     }
 
     function handleBrandNameChange(ev: React.ChangeEvent<HTMLSelectElement>) {
@@ -74,6 +95,7 @@ export default function ProductSearcher({
             } else setDisplayText("All Products");
             setShowEnterButton(false);
             setFetchNewProducts(false);
+            setProductSuggestions([]);
         }
         // Fetch Brands
         async function getBrands() {
@@ -86,9 +108,9 @@ export default function ProductSearcher({
         // For fetching suggestions
         async function getSuggestions() {
             const fetchedProducts = await fetchProductListing(searchValue);
-            console.log(fetchedProducts);
             setProductSuggestions(fetchedProducts);
             setFetchNewSuggestions(false);
+            setSelectedSuggestionIndex(0);
         }
         if (fetchNewSuggestions) getSuggestions();
         if (searchValue.length === 0) setProductSuggestions([]);
@@ -138,11 +160,16 @@ export default function ProductSearcher({
                         <div>
                             <ul className="flex flex-col">
                                 {productSuggestions &&
-                                    productSuggestions.map((p) => (
+                                    productSuggestions.map((p, i) => (
                                         <li
-                                            className="pl-8 whitespace-nowrap overflow-hidden text-ellipsis text-left cursor-default bg-stone-100 dark:bg-stone-900 hover:bg-stone-200 hover:dark:bg-stone-800"
+                                            className={`pl-8 whitespace-nowrap overflow-hidden text-ellipsis text-left cursor-default ${
+                                                selectedSuggestionIndex - 1 !== i
+                                                    ? `bg-stone-100 dark:bg-stone-900`
+                                                    : `bg-stone-200 dark:bg-stone-800`
+                                            }`}
                                             key={p.id}
                                             onClick={handleSuggestionClick}
+                                            onMouseOver={() => setSelectedSuggestionIndex(i)}
                                         >
                                             {p.name.toLocaleLowerCase()}
                                         </li>

@@ -53,7 +53,9 @@ export default function Product({ params }: { params: IProduct }) {
             </div>
             <h3 className="grow">
                 <span className="font-bold text-xl">{name}</span>
-                <u className="text-sm no-underline opacity-70 ml-2">- {brand.name}</u>
+                <Link href={`/brands/${brand.id}`} className="text-sm no-underline opacity-70 ml-2">
+                    - <u className="no-underline hover:underline">{brand.name}</u>
+                </Link>
             </h3>
             <div>
                 <span className="font-light">Description:</span>

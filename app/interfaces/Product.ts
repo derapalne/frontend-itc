@@ -46,3 +46,14 @@ export interface ProductUserPage {
     brand_id: number;
     creator_user_id: number;
 }
+
+export interface ProductBrandPage {
+    id: number;
+    name: string;
+    image_url: string;
+    description: string;
+    price: number;
+    brand_id: number;
+    creator_user_id: number;
+    user: IUser;
+}

@@ -12,6 +12,7 @@ async function postInitialization() {
 
 export default function InitializePage() {
     const [firstRender, setFirstRender] = useState(true);
+    const [text, setText] = useState("...");
     const router = useRouter();
 
     async function initialize() {
@@ -25,4 +26,17 @@ export default function InitializePage() {
         initialize();
         setFirstRender(false);
     }
+
+    setInterval(() => {
+        if (text.length === 3) setText("");
+        else setText(text + ".");
+    }, 1000);
+
+    return (
+        <div>
+            <h3 className="text-lg font-bold">
+                Initializing page. This may take a few seconds{text}
+            </h3>
+        </div>
+    );
 }

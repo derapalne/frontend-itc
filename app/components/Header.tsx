@@ -30,13 +30,17 @@ export default function Header() {
                     <Link href="/products">Products</Link>
                 </li>
                 {userData ? (
-                    <li>
-                        <span>Hello, {userData.username}!</span>
-                    </li>
+                    <>
+                        <li>
+                            <span>Hello, {userData.username}!</span>
+                        </li>
+                        <li className="ml-4 hover:font-normal duration-300">
+                            <Link href="/carts">Check your Carts 🛒</Link>
+                        </li>
+                    </>
                 ) : (
                     ``
                 )}
-
                 {userData?.isAdmin ? (
                     <li className="mx-4 hover:font-normal duration-300">
                         <Link href="/admin">Admin Tab</Link>

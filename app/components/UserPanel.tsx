@@ -2,8 +2,9 @@ import { IUser } from "../interfaces/User";
 import ProductForList from "./ProductForList";
 
 export default function UserPanel({ params }: { params: { user: IUser; ownProfile: boolean } }) {
-    const { username, n_products, creationDate, products } = params.user;
-    const date = creationDate ? new Date(Date.parse(creationDate)) : undefined;
+    const { username, n_products, creationDate, products, last_login } = params.user;
+    const joinDate = creationDate ? new Date(Date.parse(creationDate)) : undefined;
+    const loginDate = last_login ? new Date(Date.parse(last_login)) : undefined;
     return (
         <div>
             <h4 className="text-xl font-bold">{username}</h4>
@@ -13,10 +14,15 @@ export default function UserPanel({ params }: { params: { user: IUser; ownProfil
                     Edit Profile
                 </button>
             )}
-            <div className="text-end opacity-60">
-                {date && (
+            <div className="flex flex-col text-end opacity-60">
+                {joinDate && (
                     <span>
-                        Joined on {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
+                        Joined on {joinDate.toLocaleDateString()}
+                    </span>
+                )}
+                {loginDate && (
+                    <span>
+                        Last login: {loginDate.toLocaleDateString()}
                     </span>
                 )}
             </div>

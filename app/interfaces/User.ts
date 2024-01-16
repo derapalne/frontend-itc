@@ -6,4 +6,5 @@ export interface IUser {
     n_products: number;
     products?: Product[];
     creationDate?: string;
+    last_login?: string;
 }

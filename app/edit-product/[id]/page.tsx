@@ -28,14 +28,16 @@ export default function EditProductPage() {
     if (!accessToken && accessTokenCookie) setAccessToken(accessTokenCookie);
 
     const activeUserDataCookie = Cookies.get("user_data");
-    if (!activeUserData && activeUserDataCookie) setActiveUserData(JSON.parse(activeUserDataCookie));
+    if (!activeUserData && activeUserDataCookie)
+        setActiveUserData(JSON.parse(activeUserDataCookie));
 
     if (
-        !accessToken ||
-        (activeUserData && product && activeUserData.id !== product.creator_user_id)
+        product &&
+        (!accessToken ||
+            (activeUserData && product && activeUserData.id !== product.creator_user_id))
     ) {
+        console.log(accessToken, activeUserData, product);
         router.push("/products");
-        // console.log("should redirect");
     }
 
     useEffect(() => {

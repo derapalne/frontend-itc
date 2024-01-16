@@ -1,4 +1,5 @@
 "use client";
+import Cookies from "js-cookie";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Product from "../../components/Product";
@@ -7,17 +8,24 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
-    const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/${id}`);
+    const accessToken = Cookies.get("access_token");
+    const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/${id}`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
     const jsonResponse: IProduct = await response.json();
     return jsonResponse;
 };
 
 export default function Products() {
     const productId = parseInt(usePathname().split("/")[2]);
+
     const [product, setProduct] = useState<IProduct>();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        console.log('effect');
         async function getProductData() {
             const productData = await fetchProductData(productId);
             setProduct(productData);

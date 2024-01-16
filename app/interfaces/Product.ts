@@ -29,6 +29,7 @@ export interface Product {
     brand_id: number;
     creator_user_id: number;
     user: IUser;
+    is_on_cart: boolean;
 }
 
 export interface IProductListing {

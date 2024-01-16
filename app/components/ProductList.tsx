@@ -111,6 +111,7 @@ export default function ProductList() {
                                 brand: p.brand,
                                 creator_user_id: p.creator_user_id,
                                 user: p.user,
+                                is_on_cart: false
                             }}
                         />
                     ))}

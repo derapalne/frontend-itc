@@ -6,4 +6,5 @@ export interface ICart {
     user_id: number;
     products: Product[];
     isActive: boolean;
+    ordered_on?: string;
 }

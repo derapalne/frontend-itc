@@ -64,18 +64,18 @@ export default function ProductList() {
 
     if (errorFetching)
         return (
-            <div className="w-11/12 py-4 mx-auto text-center opacity-40">
+            <div className="h-screen w-11/12 py-4 mx-auto text-center opacity-40">
                 There was an error fetching the products, please try again later.
             </div>
         );
 
     if (isLoading)
         return (
-            <div className="w-11/12 py-4 mx-auto text-center opacity-40">Loading Products...</div>
+            <div className="min-h-screen w-11/12 py-4 mx-auto text-center opacity-40">Loading Products...</div>
         );
 
     return (
-        <div>
+        <div className="min-h-screen">
             <ProductSearcher
                 params={{ searchProductsWithFilters: getItemsWithFilters }}
             ></ProductSearcher>

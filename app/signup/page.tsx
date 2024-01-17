@@ -6,7 +6,7 @@ export default function SignupPage() {
     return (
         <>
             <Header />
-            <main className="h-screen w-full sm:w-5/6 pt-4 mx-auto bg-stone-50 dark:bg-stone-950">
+            <main className="min-h-screen w-full sm:w-5/6 pt-4 mx-auto bg-stone-50 dark:bg-stone-950">
                 <div>
                     <SignupForm></SignupForm>
                 </div>

@@ -76,6 +76,7 @@ export default function CartPage() {
     const [activeUserData, setActiveUserData] = useState<UserData>();
     const [cartTotal, setCartTotal] = useState(0);
     const [deletedProducts, setDeletedProducts] = useState<number[]>([]);
+    const [confirmOrderText, setConfirmOrderText] = useState("Confirm Order");
 
     const accessTokenCookie = Cookies.get("access_token");
     if (!accessToken && accessTokenCookie) setAccessToken(accessTokenCookie);
@@ -106,8 +107,9 @@ export default function CartPage() {
 
     async function handleOrderCartButton() {
         if (!activeCart) return;
+        setConfirmOrderText('Confirming Order...');
         const ordered = await postOrderCart(activeCart.id, accessToken);
-        if (ordered.error) return;
+        if (ordered.error) return setConfirmOrderText('There has been an error, please try again later');
         console.log("Has to refresh");
         console.log(ordered);
         if (ordered[0] === 1) {
@@ -123,7 +125,7 @@ export default function CartPage() {
         if (removed.error || removed.statusCode === 500) return;
         console.log("Removed product successfully");
         const existingProducts = activeCart.products.filter(p => p.id !== productId);
-        setActiveCart({...activeCart, products: existingProducts});
+        setActiveCart({ ...activeCart, products: existingProducts });
     }
 
     console.log(deletedProducts);
@@ -131,8 +133,8 @@ export default function CartPage() {
     return (
         <>
             <Header />
-            <main className="h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
-                <div className="w-full mx-auto text-center">
+            <main className="min-h-screen w-full sm:w-5/6 mx-auto pt-4 pb-8 bg-stone-50 dark:bg-stone-950">
+                <div className="w-full mx-auto px-2 text-center">
                     <div>
                         {acIsLoading ? (
                             <div>
@@ -191,7 +193,7 @@ export default function CartPage() {
                                         className="m-auto p-2 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                                         onClick={handleOrderCartButton}
                                     >
-                                        Confirm Order
+                                        {confirmOrderText}
                                     </button>
                                 </div>
                             </div>

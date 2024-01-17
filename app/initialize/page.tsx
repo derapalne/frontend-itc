@@ -24,7 +24,6 @@ export default function InitializePage() {
     }
 
     if (firstRender) {
-        console.log("initializing...");
         initialize();
         setFirstRender(false);
     }
@@ -37,8 +36,8 @@ export default function InitializePage() {
     return (
         <div>
             <Header />
-            <main className="h-screen w-full sm:w-5/6 pt-4 mx-auto bg-stone-50 dark:bg-stone-950">
-                <h3 className="text-lg font-bold">
+            <main className="min-h-screen w-full sm:w-5/6 pt-4 mx-auto bg-stone-50 dark:bg-stone-950">
+                <h3 className="text-lg text-center font-bold">
                     Initializing page. This may take a few seconds{text}
                 </h3>
             </main>

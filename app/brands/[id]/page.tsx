@@ -30,7 +30,7 @@ export default function BrandPage() {
         return (
             <>
                 <Header />
-                <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
+                <main className="min-h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
                     <div className="w-7/12 pt-4 mx-auto text-center opacity-40">
                         <h3 className="">Loading brand data...</h3>
                     </div>
@@ -43,7 +43,7 @@ export default function BrandPage() {
         return (
             <>
                 <Header />
-                <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
+                <main className="min-h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
                     <div className="w-7/12 mx-auto">
                         <h3>No brand found!</h3>
                     </div>
@@ -55,7 +55,7 @@ export default function BrandPage() {
     return (
         <>
             <Header />
-            <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
+            <main className="min-h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
                 <div className="w-7/12 pt-4 mx-auto">
                     <Brand params={brand} />
                 </div>

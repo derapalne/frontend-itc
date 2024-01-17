@@ -53,7 +53,7 @@ export default function EditProductPage() {
         return (
             <>
                 <Header />
-                <main className="h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
+                <main className="min-h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
                     <div className="w-7/12 mx-auto text-center">
                         <h3 className="">Loading product data...</h3>
                     </div>
@@ -66,7 +66,7 @@ export default function EditProductPage() {
         return (
             <>
                 <Header />
-                <main className="h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
+                <main className="min-h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
                     <div className="w-7/12 mx-auto text-center">
                         <h3>No product found!</h3>
                     </div>
@@ -78,7 +78,7 @@ export default function EditProductPage() {
     return (
         <>
             <Header />
-            <main className="h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
+            <main className="min-h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
                 <div className="w-full mx-auto text-center">
                     <EditProductForm params={product} />
                 </div>

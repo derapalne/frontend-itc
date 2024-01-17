@@ -71,9 +71,7 @@ export default function Product({ params }: { params: IProduct }) {
                     src={image_url}
                     alt={name}
                     className={
-                        image_url.startsWith("https://pics.freeicons")
-                            ? "dark:invert"
-                            : "object-cover"
+                        image_url.startsWith("https://pics.freeicons") ? "dark:invert" : "object-cover"
                     }
                     width={256}
                     height={256}
@@ -115,7 +113,12 @@ export default function Product({ params }: { params: IProduct }) {
                     {cartButtonText}
                 </button>
             ) : (
-                <></>
+                <Link
+                    href="/login"
+                    className="m-auto p-2 rounded duration-300 bg-orange-400 dark:bg-orange-500 hover:bg-orange-500 dark:hover:bg-orange-400"
+                >
+                    {cartButtonText}
+                </Link>
             )}
 
             {accessToken && userData?.id === user.id ? (

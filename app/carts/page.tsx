@@ -118,17 +118,16 @@ export default function CartPage() {
         }
     }
 
-    async function handleRemoveProductFromCartButton(productId: number) {
+    async function handleRemoveProductFromCartButton(productId: number, productPrice: number) {
         if (!activeCart) return;
         const removed = await deleteItemFromCart(productId, accessToken);
         console.log(removed);
         if (removed.error || removed.statusCode === 500) return;
         console.log("Removed product successfully");
+        setCartTotal(cartTotal - productPrice);
         const existingProducts = activeCart.products.filter(p => p.id !== productId);
         setActiveCart({ ...activeCart, products: existingProducts });
     }
-
-    console.log(deletedProducts);
 
     return (
         <>
@@ -150,13 +149,6 @@ export default function CartPage() {
                                 <div className="my-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                     {activeCart.products?.map((p) => {
                                         const id = p.id ? p.id : 0;
-                                        console.log(deletedProducts.includes(id));
-                                        // Prevent showing product if in deleted array
-                                        if (deletedProducts.includes(id)) {
-                                            console.log("should not show");
-                                            return '';
-                                        }
-                                        // Show product otherwise
                                         return (
                                             <div className="grid relative" key={p.id}>
                                                 <ProductForList
@@ -177,7 +169,7 @@ export default function CartPage() {
                                                     <button
                                                         className="px-4 py-2 sm:px-2 sm:py-0 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                                                         onClick={() => {
-                                                            handleRemoveProductFromCartButton(id);
+                                                            handleRemoveProductFromCartButton(id, p.price);
                                                         }}
                                                     >
                                                         🗑

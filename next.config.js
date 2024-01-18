@@ -20,6 +20,9 @@ const nextConfig = {
             },
         ],
     },
+    env: {
+        FAKE_CACHE: process.env.FAKE_CACHE,
+    },
 };
 
 module.exports = nextConfig;

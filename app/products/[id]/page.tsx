@@ -25,13 +25,14 @@ export default function Products() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        console.log('effect');
         async function getProductData() {
             const productData = await fetchProductData(productId);
             setProduct(productData);
             setIsLoading(false);
         }
-        const fakeCache = setTimeout(getProductData, Math.random() * 2000 + 500);
+        // Toggle fake cache based con env configuration
+        const ms = process.env["FAKE_CACHE"] ? Math.random() * 1000 + 500 : 0;
+        const fakeCache = setTimeout(getProductData, ms);
     }, [productId]);
 
     if (isLoading)

@@ -19,7 +19,8 @@ const fetchItemsWithFilters = async (
 ): Promise<IProduct[]> => {
     let additionalFilters = "";
     filters?.forEach((f) => {
-        if (f.filter === "brand" && f.value !== "Select a Brand") additionalFilters += "&b=" + f.value;
+        if (f.filter === "brand" && f.value !== "Select a Brand")
+            additionalFilters += "&b=" + f.value;
     });
     const response = await fetch(
         `${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/?n=${searchValue}&d=${searchValue}${additionalFilters}`
@@ -47,7 +48,9 @@ export default function ProductList() {
                 setErrorFetching(true);
             }
         }
-        const fakeCache = setTimeout(getItems, Math.random() * 2000 + 500);
+        // Toggle fake cache based con env configuration
+        const ms = process.env["FAKE_CACHE"] ? Math.random() * 1000 + 500 : 0;
+        const fakeCache = setTimeout(getItems, ms);
     }, []);
 
     async function getItemsWithFilters(searchValue: string, filters?: SearchFilter[]) {
@@ -71,7 +74,9 @@ export default function ProductList() {
 
     if (isLoading)
         return (
-            <div className="min-h-screen w-11/12 py-4 mx-auto text-center opacity-40">Loading Products...</div>
+            <div className="min-h-screen w-11/12 py-4 mx-auto text-center opacity-40">
+                Loading Products...
+            </div>
         );
 
     return (
@@ -111,7 +116,7 @@ export default function ProductList() {
                                 brand: p.brand,
                                 creator_user_id: p.creator_user_id,
                                 user: p.user,
-                                is_on_cart: false
+                                is_on_cart: false,
                             }}
                         />
                     ))}

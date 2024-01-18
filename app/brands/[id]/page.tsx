@@ -23,7 +23,9 @@ export default function BrandPage() {
             setBrand(brandData);
             setIsLoading(false);
         }
-        const fakeCache = setTimeout(getBrandData, Math.random() * 1000 + 500);
+        // Toggle fake cache based con env configuration
+        const ms = process.env["FAKE_CACHE"] ? Math.random() * 1000 + 500 : 0;
+        const fakeCache = setTimeout(getBrandData, ms);
     }, [productId]);
 
     if (isLoading)

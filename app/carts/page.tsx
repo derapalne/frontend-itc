@@ -92,13 +92,17 @@ export default function CartPage() {
             setCartTotal(total);
             setAcIsLoading(false);
         }
-        const fakeActiveCache = setTimeout(getActiveCartData, Math.random() * 2000 + 500);
+        // Toggle fake cache based con env configuration
+        const activeMs = process.env["FAKE_CACHE"] ? Math.random() * 1000 + 500 : 0;
+        const fakeActiveCache = setTimeout(getActiveCartData, activeMs);
         async function getOrderedCartsData() {
             const cart = await fetchOrderedCarts(accessToken);
             setOrderedCarts(cart);
             setOcIsLoading(false);
         }
-        const fakeOrderedCache = setTimeout(getOrderedCartsData, Math.random() * 2000 + 500);
+        // Same for ordered carts
+        const orderedMs = process.env["FAKE_CACHE"] ? Math.random() * 1000 + 500 : 0;
+        const fakeOrderedCache = setTimeout(getOrderedCartsData, orderedMs);
         if (!accessToken) {
             console.log("No access token found");
             router.push("/products");
@@ -107,9 +111,10 @@ export default function CartPage() {
 
     async function handleOrderCartButton() {
         if (!activeCart) return;
-        setConfirmOrderText('Confirming Order...');
+        setConfirmOrderText("Confirming Order...");
         const ordered = await postOrderCart(activeCart.id, accessToken);
-        if (ordered.error) return setConfirmOrderText('There has been an error, please try again later');
+        if (ordered.error)
+            return setConfirmOrderText("There has been an error, please try again later");
         console.log("Has to refresh");
         console.log(ordered);
         if (ordered[0] === 1) {
@@ -125,7 +130,7 @@ export default function CartPage() {
         if (removed.error || removed.statusCode === 500) return;
         console.log("Removed product successfully");
         setCartTotal(cartTotal - productPrice);
-        const existingProducts = activeCart.products.filter(p => p.id !== productId);
+        const existingProducts = activeCart.products.filter((p) => p.id !== productId);
         setActiveCart({ ...activeCart, products: existingProducts });
     }
 
@@ -169,7 +174,10 @@ export default function CartPage() {
                                                     <button
                                                         className="px-4 py-2 sm:px-2 sm:py-0 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                                                         onClick={() => {
-                                                            handleRemoveProductFromCartButton(id, p.price);
+                                                            handleRemoveProductFromCartButton(
+                                                                id,
+                                                                p.price
+                                                            );
                                                         }}
                                                     >
                                                         🗑

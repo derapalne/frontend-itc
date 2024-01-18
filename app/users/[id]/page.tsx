@@ -21,7 +21,7 @@ export default function UserPage() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        async function getProductData() {
+        async function getUserData() {
             const activeUserDataCookie = Cookies.get("user_data");
             if (activeUserDataCookie) setActiveUserData(JSON.parse(activeUserDataCookie));
             if (!userData) {
@@ -30,7 +30,9 @@ export default function UserPage() {
                 setIsLoading(false);
             }
         }
-        const fakeCache = setTimeout(getProductData, Math.random() * 2000 + 500);
+        // Toggle fake cache based con env configuration
+        const ms = process.env["FAKE_CACHE"] ? Math.random() * 1000 + 500 : 0;
+        const fakeCache = setTimeout(getUserData, ms);
     }, [userId, userData]);
 
     if (isLoading)

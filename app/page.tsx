@@ -1,15 +1,10 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LandingPage from "./components/LandingPage";
+import Main from "./components/Main";
 
 export default function Home() {
     return (
-        <>
-            <Header />
-            <main className="min-h-screen w-full sm:w-5/6 mx-auto pb-8 bg-stone-50 dark:bg-stone-950">
-                <LandingPage></LandingPage>
-            </main>
-            <Footer />
-        </>
+        <LandingPage></LandingPage>
     );
 }

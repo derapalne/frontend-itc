@@ -3,8 +3,6 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { IUser } from "@/app/interfaces/User";
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
 import { UserData } from "@/app/interfaces/UserData";
 import UserPanel from "@/app/components/UserPanel";
 
@@ -37,45 +35,27 @@ export default function UserPage() {
 
     if (isLoading)
         return (
-            <>
-                <Header />
-                <main className="min-h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
-                    <div className="w-7/12 pt-4 mx-auto text-center opacity-40">
-                        <h3 className="">Loading user data...</h3>
-                    </div>
-                </main>
-                <Footer />
-            </>
+            <div className="w-7/12 pt-4 mx-auto text-center opacity-40">
+                <h3 className="">Loading user data...</h3>
+            </div>
         );
 
     if (!userData)
         return (
-            <>
-                <Header />
-                <main className="min-h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
-                    <div className="w-7/12 mx-auto">
-                        <h3>No user found!</h3>
-                    </div>
-                </main>
-                <Footer />
-            </>
+            <div className="w-7/12 mx-auto">
+                <h3>No user found!</h3>
+            </div>
         );
 
     return (
-        <>
-            <Header />
-            <main className="min-h-screen w-full sm:w-5/6 mx-auto pb-8 bg-stone-50 dark:bg-stone-950">
-                <div className="w-7/12 pt-4 mx-auto">
-                    <UserPanel
-                        params={{
-                            user: userData,
-                            ownProfile:
-                                activeUserData && activeUserData.id === userData.id ? true : false,
-                        }}
-                    />
-                </div>
-            </main>
-            <Footer />
-        </>
+        <div className="w-7/12 pt-4 mx-auto">
+            <UserPanel
+                params={{
+                    user: userData,
+                    ownProfile:
+                        activeUserData && activeUserData.id === userData.id ? true : false,
+                }}
+            />
+        </div>
     );
 }

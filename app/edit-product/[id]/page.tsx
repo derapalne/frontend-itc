@@ -3,9 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Product as IProduct } from "../../interfaces/Product";
-import Header from "@/app/components/Header";
 import EditProductForm from "@/app/components/EditProductForm";
-import Footer from "@/app/components/Footer";
 import { UserData } from "@/app/interfaces/UserData";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
@@ -50,39 +48,21 @@ export default function EditProductPage() {
 
     if (isLoading)
         return (
-            <>
-                <Header />
-                <main className="min-h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
-                    <div className="w-7/12 mx-auto text-center">
-                        <h3 className="">Loading product data...</h3>
-                    </div>
-                </main>
-                <Footer />
-            </>
+            <div className="w-7/12 mx-auto text-center">
+                <h3 className="">Loading product data...</h3>
+            </div>
         );
 
     if (!product)
         return (
-            <>
-                <Header />
-                <main className="min-h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
-                    <div className="w-7/12 mx-auto text-center">
-                        <h3>No product found!</h3>
-                    </div>
-                </main>
-                <Footer />
-            </>
+            <div className="w-7/12 mx-auto text-center">
+                <h3>No product found!</h3>
+            </div>
         );
 
     return (
-        <>
-            <Header />
-            <main className="min-h-screen w-full sm:w-5/6 mx-auto pt-4 bg-stone-50 dark:bg-stone-950">
-                <div className="w-full mx-auto text-center">
-                    <EditProductForm params={product} />
-                </div>
-            </main>
-            <Footer />
-        </>
+        <div className="w-full mx-auto text-center">
+            <EditProductForm params={product} />
+        </div>
     );
 }

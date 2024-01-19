@@ -4,8 +4,6 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Product from "../../components/Product";
 import { Product as IProduct } from "../../interfaces/Product";
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
 import ProductSkeleton from "@/app/components/ProductSkeleton";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
@@ -38,39 +36,21 @@ export default function Products() {
 
     if (isLoading)
         return (
-            <>
-                <Header />
-                <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
-                    <div className="w-7/12 pt-4 mx-auto text-center opacity-90">
-                        <ProductSkeleton />
-                    </div>
-                </main>
-                <Footer />
-            </>
+            <div className="w-7/12 pt-4 mx-auto text-center opacity-90">
+                <ProductSkeleton />
+            </div>
         );
 
     if (!product)
         return (
-            <>
-                <Header />
-                <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
-                    <div className="w-7/12 mx-auto">
-                        <h3>No product found!</h3>
-                    </div>
-                </main>
-                <Footer />
-            </>
+            <div className="w-7/12 mx-auto">
+                <h3>No product found!</h3>
+            </div>
         );
 
     return (
-        <>
-            <Header />
-            <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
-                <div className="w-7/12 pt-4 mx-auto">
-                    <Product params={product} />
-                </div>
-            </main>
-            <Footer />
-        </>
+        <div className="w-7/12 pt-4 mx-auto">
+            <Product params={product} />
+        </div>
     );
 }

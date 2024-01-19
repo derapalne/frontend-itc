@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { IUser } from "@/app/interfaces/User";
 import { UserData } from "@/app/interfaces/UserData";
-import UserPanel from "@/app/components/UserPanel";
+import UserPanel from "@/app/components/users/UserPanel";
 
 const fetchUserData = async (id: number): Promise<IUser> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/users/${id}`);

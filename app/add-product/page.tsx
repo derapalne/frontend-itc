@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import AddProductForm from "../components/AddProductForm";
+import AddProductForm from "../components/products/AddProductForm";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 

@@ -1,11 +1,11 @@
 "use client";
-import { Product as IProduct } from "../interfaces/Product";
+import { Product as IProduct } from "../../interfaces/Product";
 import ProductForList from "./ProductForList";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import ProductSearcher from "./ProductSearcher";
-import { SearchFilter } from "../interfaces/Filter";
+import { SearchFilter } from "../../interfaces/Filter";
 
 const fetchItems = async (): Promise<IProduct[]> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/`);

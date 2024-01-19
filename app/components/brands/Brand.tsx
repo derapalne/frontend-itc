@@ -1,5 +1,5 @@
-import { Brand as IBrand } from "../interfaces/Brand";
-import ProductForList from "./ProductForList";
+import { Brand as IBrand } from "../../interfaces/Brand";
+import ProductForList from "../products/ProductForList";
 
 export default function Brand({ params }: { params: IBrand }) {
     const { name, logo_url, id, products, creationDate } = params;

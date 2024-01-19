@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { UserData } from "@/app/interfaces/UserData";
 import { ICart } from "../interfaces/Cart";
-import ProductForList from "../components/ProductForList";
+import ProductForList from "../components/products/ProductForList";
 
 const fetchActiveCart = async (accessToken: string): Promise<{ cart: ICart; total: number }> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/users/active-cart`, {

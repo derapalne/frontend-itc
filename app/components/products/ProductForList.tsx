@@ -1,6 +1,6 @@
 "use client";
-import { Product as IProduct } from "../interfaces/Product";
-import { Brand as IBrand } from "../interfaces/Brand";
+import { Product as IProduct } from "../../interfaces/Product";
+import { Brand as IBrand } from "../../interfaces/Brand";
 import Link from "next/link";
 import Image from "next/image";
 

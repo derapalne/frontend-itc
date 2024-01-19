@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Product as IProduct } from "../../interfaces/Product";
-import EditProductForm from "@/app/components/EditProductForm";
+import EditProductForm from "@/app/components/products/EditProductForm";
 import { UserData } from "@/app/interfaces/UserData";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {

@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { SearchFilter } from "../interfaces/Filter";
-import { Brand as IBrand } from "../interfaces/Brand";
-import { IProductListing } from "../interfaces/Product";
+import { SearchFilter } from "../../interfaces/Filter";
+import { Brand as IBrand } from "../../interfaces/Brand";
+import { IProductListing } from "../../interfaces/Product";
 
 const fetchBrands = async (): Promise<IBrand[]> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/brands/`);

@@ -1,11 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Product as IProduct } from "../interfaces/Product";
-import { Brand as IBrand } from "../interfaces/Brand";
+import { Product as IProduct } from "../../interfaces/Product";
+import { Brand as IBrand } from "../../interfaces/Brand";
 import Image from "next/image";
 import Cookies from "js-cookie";
-import { UserData } from "../interfaces/UserData";
+import { UserData } from "../../interfaces/UserData";
 import Link from "next/link";
 
 async function addProductToCart(productId: number, accessToken: string) {

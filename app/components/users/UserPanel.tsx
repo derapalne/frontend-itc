@@ -1,5 +1,5 @@
-import { IUser } from "../interfaces/User";
-import ProductForList from "./ProductForList";
+import { IUser } from "../../interfaces/User";
+import ProductForList from "../products/ProductForList";
 
 export default function UserPanel({ params }: { params: { user: IUser; ownProfile: boolean } }) {
     const { username, n_products, creationDate, products, last_login } = params.user;

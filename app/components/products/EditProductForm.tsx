@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { CreateProduct } from "../interfaces/Product";
-import { Brand as IBrand } from "../interfaces/Brand";
+import { UpdateProduct as IProduct } from "../../interfaces/Product";
+import { Brand as IBrand } from "../../interfaces/Brand";
 import Image from "next/image";
 
 const fetchBrands = async (): Promise<IBrand[]> => {
@@ -12,14 +12,13 @@ const fetchBrands = async (): Promise<IBrand[]> => {
     return jsonResponse;
 };
 
-const submitProduct = async (
-    product: CreateProduct,
-    image: File,
+const updateProduct = async (
+    product: IProduct,
     accessToken: string,
     setWarningMessage: Function
 ) => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products`, {
-        method: "POST",
+        method: "PUT",
         headers: {
             "Content-Type": "Application/Json",
             Authorization: `Bearer ${accessToken}`,
@@ -28,43 +27,51 @@ const submitProduct = async (
     });
     const jsonResponse = await response.json();
     console.log(jsonResponse);
-    if (jsonResponse.status === 500 || jsonResponse.status === 403 || !jsonResponse.id) {
+    if (jsonResponse.status === 500 || jsonResponse.status === 403) {
         setWarningMessage(jsonResponse.message);
         return false;
     }
-    const formData = new FormData();
-    formData.append("image", image);
-    const imageResponse = await fetch(
-        `${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/${jsonResponse.id}/image`,
-        {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-            body: formData,
-        }
-    );
-    const jsonImageResponse = await imageResponse.json();
-    console.log(jsonImageResponse);
-    if (jsonImageResponse.error) {
-        setWarningMessage(jsonImageResponse.message);
-        return false;
+    if (jsonResponse[0] === 1) {
+        setWarningMessage("");
+        return true;
     }
-    setWarningMessage("");
-    return true;
 };
 
-export default function AddProductForm() {
+const deleteProduct = async (id: number, accessToken: string, setWarningMessage: Function) => {
+    const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "Application/Json",
+            Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ id: id }),
+    });
+    const jsonResponse = await response.json();
+    console.log(jsonResponse);
+    if (jsonResponse.status === 500 || jsonResponse.status === 403) {
+        setWarningMessage(jsonResponse.message);
+        return false;
+    }
+    if (jsonResponse.id === id) {
+        setWarningMessage("");
+        return true;
+    }
+};
+
+export default function EditProductForm({ params }: { params: IProduct }) {
     const router = useRouter();
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
-    const [image, setImage] = useState<File>();
-    const [price, setPrice] = useState(0);
+    const [name, setName] = useState(params.name);
+    const [description, setDescription] = useState(params.description);
+    const [imageUrl, setImageUrl] = useState(params.image_url);
+    const [price, setPrice] = useState(params.price);
     const [warningMessage, setWarningMessage] = useState("");
     const [brands, setBrands] = useState<IBrand[]>();
-    const [selectedBrandId, setSelectedBrandId] = useState(0);
+    const [selectedBrandId, setSelectedBrandId] = useState(params.brand?.id);
     const [accessToken, setAccessToken] = useState("");
+
+    const [deleteButtonText, setDeleteButtonText] = useState("Delete Product");
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [deleteTimeout, setDeleteTimeout] = useState<NodeJS.Timeout>();
 
     useEffect(() => {
         const accessTokenCookie = Cookies.get("access_token");
@@ -92,13 +99,6 @@ export default function AddProductForm() {
         setImageUrl(ev.currentTarget.value);
     }
 
-    function handlImageChange(ev: React.FormEvent<HTMLInputElement>) {
-        const images = ev.currentTarget.files;
-        if (!images) return;
-        const image = images.item(0);
-        if (image) setImage(image);
-    }
-
     function handlPriceChange(ev: React.FormEvent<HTMLInputElement>) {
         setPrice(parseInt(ev.currentTarget.value));
     }
@@ -109,24 +109,49 @@ export default function AddProductForm() {
         if (!name) return setWarningMessage("Please enter a name");
         if (!description) return setWarningMessage("Please enter a description");
         if (!price) return setWarningMessage("Please enter a price");
-        // if (!imageUrl) return setWarningMessage("Please enter an image url");
-        if (!image) return setWarningMessage("Please provide an image");
-        const product: CreateProduct = {
+        if (!imageUrl) return setWarningMessage("Please enter an image url");
+        const product: IProduct = {
+            id: params.id,
             name: name,
             description: description,
             image_url: imageUrl,
             price: price,
             brand_id: selectedBrandId,
         };
-        const added = await submitProduct(product, image, accessToken, setWarningMessage);
+        const added = await updateProduct(product, accessToken, setWarningMessage);
         if (added) router.push("/products");
+    }
+
+    function handleConfirmDelete() {
+        setConfirmDelete(true);
+    }
+
+    function handleDeleteClick(ev: React.FormEvent<HTMLButtonElement>) {
+        ev.preventDefault();
+        handleDeleteProduct(params.id ? params.id : 0);
+    }
+
+    async function handleDeleteProduct(id: number) {
+        if (!confirmDelete) {
+            setDeleteButtonText("Click to confirm");
+            const timeout = setTimeout(() => {
+                setConfirmDelete(false);
+                setDeleteButtonText("Delete Product");
+            }, 2000);
+            setDeleteTimeout(timeout);
+            return handleConfirmDelete();
+        }
+        clearTimeout(deleteTimeout);
+        setDeleteButtonText("Deleting...");
+        const deleted = await deleteProduct(id, accessToken, setWarningMessage);
+        if (deleted) router.push("/products");
     }
 
     return (
         <form className="flex flex-col items-center w-11/12 md:w-10/12 mx-auto p-4 border-2 border-slate-100 shadow dark:border-0 dark:bg-stone-900 rounded-lg">
             <h2 className="font-bold text-xl">Add Product</h2>
             <div className="mt-4">
-                <h4 className="text-center">Select brand:</h4>
+                <h4>Select brand:</h4>
                 <div className="my-4 mx-auto grid grid-cols-4 w-10/12">
                     {brands &&
                         brands.map((b) => (
@@ -138,14 +163,9 @@ export default function AddProductForm() {
                                 onClick={() => handleBrandSelection(b.id)}
                             >
                                 <Image src={b.logo_url} alt={b.name} width={50} height={50} />
-                                <h4 className="mt-2 text-sm text-center">{b.name}</h4>
+                                <h4 className="mt-2 text-sm">{b.name}</h4>
                             </div>
                         ))}
-                    {(!brands || brands.length === 0) && (
-                        <div className="col-span-4">
-                            No brands found! Please populate the database.
-                        </div>
-                    )}
                 </div>
             </div>
 
@@ -154,7 +174,7 @@ export default function AddProductForm() {
                     Name:
                 </label>
                 <input
-                    className="w-10/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="username"
                     type="text"
                     placeholder="Product Name"
@@ -167,7 +187,7 @@ export default function AddProductForm() {
                     Description:
                 </label>
                 <textarea
-                    className="w-11/12 h-24 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-8/12 h-24 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="description"
                     rows={3}
                     placeholder="Product description"
@@ -175,30 +195,17 @@ export default function AddProductForm() {
                     onChange={handleDescriptionChange}
                 />
             </div>
-            {/*<div className="my-4 grid grid-cols-2">
+            <div className="my-4 grid grid-cols-2">
                 <label className="text-end mx-4" htmlFor="image_url">
                     Image Url:
                 </label>
                 <input
-                    className="w-10/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="image_url"
                     type="text"
                     placeholder="Product Image (URL)"
                     value={imageUrl}
                     onChange={handlImageUrlChange}
-                />
-            </div> */}
-            <div className="my-4 grid grid-cols-2">
-                <label className="text-end mx-4" htmlFor="image_url">
-                    Image:
-                </label>
-                <input
-                    className="w-10/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
-                    name="image"
-                    type="file"
-                    placeholder="Product Image (URL)"
-                    accept="image/*"
-                    onChange={handlImageChange}
                 />
             </div>
             <div className="my-4 grid grid-cols-2">
@@ -206,7 +213,7 @@ export default function AddProductForm() {
                     Price:
                 </label>
                 <input
-                    className="w-10/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                    className="w-6/12 bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
                     name="price"
                     type="number"
                     placeholder="1, 500, 12345"
@@ -222,7 +229,15 @@ export default function AddProductForm() {
                     className="m-auto p-2 rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                     onClick={handleSubmit}
                 >
-                    Add Product
+                    Update Product
+                </button>
+            </div>
+            <div>
+                <button
+                    className="mx-auto mt-4 p-2 rounded duration-300 bg-red-300 hover:bg-red-500 dark:hover:bg-red-500 dark:bg-red-600"
+                    onClick={handleDeleteClick}
+                >
+                    {deleteButtonText}
                 </button>
             </div>
         </form>

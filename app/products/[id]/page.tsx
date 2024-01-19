@@ -2,9 +2,9 @@
 import Cookies from "js-cookie";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import Product from "../../components/Product";
+import Product from "../../components/products/Product";
 import { Product as IProduct } from "../../interfaces/Product";
-import ProductSkeleton from "@/app/components/ProductSkeleton";
+import ProductSkeleton from "@/app/components/products/ProductSkeleton";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
     const accessToken = Cookies.get("access_token");

@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { Product as IProduct } from "../interfaces/Product";
+import { Product as IProduct } from "../../interfaces/Product";
 import { useEffect, useState } from "react";
-import ProductForList from "./ProductForList";
+import ProductForList from "../products/ProductForList";
 
 async function fetchRandomProduct(): Promise<IProduct> {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/random`);

@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Brand as IBrand } from "@/app/interfaces/Brand";
-import Brand from "@/app/components/Brand";
+import Brand from "@/app/components/brands/Brand";
 
 
 const fetchBrandData = async (id: number): Promise<IBrand> => {

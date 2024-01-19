@@ -6,6 +6,7 @@ import Product from "../../components/Product";
 import { Product as IProduct } from "../../interfaces/Product";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
+import ProductSkeleton from "@/app/components/ProductSkeleton";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
     const accessToken = Cookies.get("access_token");
@@ -40,8 +41,8 @@ export default function Products() {
             <>
                 <Header />
                 <main className="h-screen w-full sm:w-5/6 mx-auto bg-stone-50 dark:bg-stone-950">
-                    <div className="w-7/12 pt-4 mx-auto text-center opacity-40">
-                        <h3 className="">Loading product data...</h3>
+                    <div className="w-7/12 pt-4 mx-auto text-center opacity-90">
+                        <ProductSkeleton />
                     </div>
                 </main>
                 <Footer />

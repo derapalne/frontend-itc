@@ -1,7 +1,6 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import Product from "../../components/Product";
 import Cookies from "js-cookie";
 import { Product as IProduct } from "../../interfaces/Product";
 import Header from "@/app/components/Header";

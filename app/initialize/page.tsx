@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Main from "../components/Main";
+import Header from "../components/Header";
 
 async function postInitialization() {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/init`, {
@@ -32,8 +34,13 @@ export default function InitializePage() {
     }, 1000);
 
     return (
-        <h3 className="text-lg text-center font-bold">
-            Initializing page. This may take a few seconds{text}
-        </h3>
+        <>
+            <Header />
+            <Main>
+                <h3 className="text-lg text-center font-bold">
+                    Initializing page. This may take a few seconds{text}
+                </h3>
+            </Main>
+        </>
     );
 }

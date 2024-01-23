@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { Product as IProduct } from "../../interfaces/Product";
 import EditProductForm from "@/app/components/products/EditProductForm";
 import { UserData } from "@/app/interfaces/UserData";
+import Header from "@/app/components/Header";
+import Main from "@/app/components/Main";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/${id}`);
@@ -25,13 +27,11 @@ export default function EditProductPage() {
     if (!accessToken && accessTokenCookie) setAccessToken(accessTokenCookie);
 
     const activeUserDataCookie = Cookies.get("user_data");
-    if (!activeUserData && activeUserDataCookie)
-        setActiveUserData(JSON.parse(activeUserDataCookie));
+    if (!activeUserData && activeUserDataCookie) setActiveUserData(JSON.parse(activeUserDataCookie));
 
     if (
         product &&
-        (!accessToken ||
-            (activeUserData && product && activeUserData.id !== product.creator_user_id))
+        (!accessToken || (activeUserData && product && activeUserData.id !== product.creator_user_id))
     ) {
         console.log(accessToken, activeUserData, product);
         router.push("/products");
@@ -48,21 +48,36 @@ export default function EditProductPage() {
 
     if (isLoading)
         return (
-            <div className="w-7/12 mx-auto text-center">
-                <h3 className="">Loading product data...</h3>
-            </div>
+            <>
+                <Header />
+                <Main>
+                    <div className="w-7/12 mx-auto text-center">
+                        <h3 className="">Loading product data...</h3>
+                    </div>
+                </Main>
+            </>
         );
 
     if (!product)
         return (
-            <div className="w-7/12 mx-auto text-center">
-                <h3>No product found!</h3>
-            </div>
+            <>
+                <Header />
+                <Main>
+                    <div className="w-7/12 mx-auto text-center">
+                        <h3>No product found!</h3>
+                    </div>
+                </Main>
+            </>
         );
 
     return (
-        <div className="w-full mx-auto text-center">
-            <EditProductForm params={product} />
-        </div>
+        <>
+            <Header />
+            <Main>
+                <div className="w-full mx-auto text-center">
+                    <EditProductForm params={product} />
+                </div>
+            </Main>
+        </>
     );
 }

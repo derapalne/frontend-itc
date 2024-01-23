@@ -28,11 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             " text-stone-900 dark:text-stone-100 bg-orange-400 dark:bg-gradient-to-b dark:from-stone-900 dark:to-stone-950 flex flex-col h-full"
                         }
                     >
-                        <Header />
-                        <Main>
-                            {children}
-
-                        </Main>
+                        {children}
                         <Footer />
                     </div>
                 </ThemeProvider>

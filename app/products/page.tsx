@@ -1,7 +1,14 @@
+import Header from "../components/Header";
+import Main from "../components/Main";
 import ProductList from "../components/products/ProductList";
 
 export default function Products() {
     return (
-        <ProductList></ProductList>
+        <>
+            <Header />
+            <Main>
+                <ProductList></ProductList>
+            </Main>
+        </>
     );
 }

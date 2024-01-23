@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Product from "../../components/products/Product";
 import { Product as IProduct } from "../../interfaces/Product";
 import ProductSkeleton from "@/app/components/products/ProductSkeleton";
+import Header from "@/app/components/Header";
+import Main from "@/app/components/Main";
 
 const fetchProductData = async (id: number): Promise<IProduct> => {
     const accessToken = Cookies.get("access_token");
@@ -36,21 +38,36 @@ export default function Products() {
 
     if (isLoading)
         return (
-            <div className="w-7/12 pt-4 mx-auto text-center opacity-90">
-                <ProductSkeleton />
-            </div>
+            <>
+                <Header />
+                <Main>
+                    <div className="w-7/12 pt-4 mx-auto text-center opacity-90">
+                        <ProductSkeleton />
+                    </div>
+                </Main>
+            </>
         );
 
     if (!product)
         return (
-            <div className="w-7/12 mx-auto">
-                <h3>No product found!</h3>
-            </div>
+            <>
+                <Header />
+                <Main>
+                    <div className="w-7/12 mx-auto">
+                        <h3>No product found!</h3>
+                    </div>
+                </Main>
+            </>
         );
 
     return (
-        <div className="w-7/12 pt-4 mx-auto">
-            <Product params={product} />
-        </div>
+        <>
+            <Header />
+            <Main>
+                <div className="w-7/12 pt-4 mx-auto">
+                    <Product params={product} />
+                </div>
+            </Main>
+        </>
     );
 }

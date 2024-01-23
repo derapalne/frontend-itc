@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { IUser } from "@/app/interfaces/User";
 import { UserData } from "@/app/interfaces/UserData";
 import UserPanel from "@/app/components/users/UserPanel";
+import Header from "@/app/components/Header";
+import Main from "@/app/components/Main";
 
 const fetchUserData = async (id: number): Promise<IUser> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/users/${id}`);
@@ -35,27 +37,42 @@ export default function UserPage() {
 
     if (isLoading)
         return (
-            <div className="w-7/12 pt-4 mx-auto text-center opacity-40">
-                <h3 className="">Loading user data...</h3>
-            </div>
+            <>
+                <Header />
+                <Main>
+                    <div className="w-7/12 pt-4 mx-auto text-center opacity-40">
+                        <h3 className="">Loading user data...</h3>
+                    </div>
+                </Main>
+            </>
         );
 
     if (!userData)
         return (
-            <div className="w-7/12 mx-auto">
-                <h3>No user found!</h3>
-            </div>
+            <>
+                <Header />
+                <Main>
+                    <div className="w-7/12 mx-auto">
+                        <h3>No user found!</h3>
+                    </div>
+                </Main>
+            </>
         );
 
     return (
-        <div className="w-7/12 pt-4 mx-auto">
-            <UserPanel
-                params={{
-                    user: userData,
-                    ownProfile:
-                        activeUserData && activeUserData.id === userData.id ? true : false,
-                }}
-            />
-        </div>
+        <>
+            <Header />
+            <Main>
+                <div className="w-7/12 pt-4 mx-auto">
+                    <UserPanel
+                        params={{
+                            user: userData,
+                            ownProfile:
+                                activeUserData && activeUserData.id === userData.id ? true : false,
+                        }}
+                    />
+                </div>
+            </Main>
+        </>
     );
 }

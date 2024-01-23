@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import AddProductForm from "../components/products/AddProductForm";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-
+import Header from "../components/Header";
+import Main from "../components/Main";
 
 export default function AddProductPage() {
     const router = useRouter();
@@ -19,6 +20,11 @@ export default function AddProductPage() {
     if (accessToken === undefined) router.push("/products");
 
     return (
-        <AddProductForm></AddProductForm>
+        <>
+            <Header />
+            <Main>
+                <AddProductForm></AddProductForm>
+            </Main>
+        </>
     );
 }

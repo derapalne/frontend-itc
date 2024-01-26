@@ -161,6 +161,7 @@ export default function CartPage() {
                                                         brand: p.brand,
                                                         creator_user_id: p.creator_user_id,
                                                         user: p.user,
+                                                        tags: p.tags,
                                                         is_on_cart: true,
                                                     }}
                                                 />
@@ -230,6 +231,7 @@ export default function CartPage() {
                                                             brand: p.brand,
                                                             creator_user_id: p.creator_user_id,
                                                             user: p.user,
+                                                            tags: p.tags,
                                                             is_on_cart: true,
                                                         }}
                                                     />

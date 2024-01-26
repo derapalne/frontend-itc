@@ -40,6 +40,7 @@ export default function UserPanel({ params }: { params: { user: IUser; ownProfil
                             brand: p.brand,
                             creator_user_id: p.creator_user_id,
                             user: params.user,
+                            tags: [],
                             is_on_cart: false,
                         }}
                     />

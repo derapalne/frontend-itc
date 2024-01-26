@@ -29,6 +29,7 @@ export default function Brand({ params }: { params: IBrand }) {
                             brand: { id: id, name: name, logo_url: logo_url },
                             creator_user_id: p.creator_user_id,
                             user: p.user,
+                            tags: [],
                             is_on_cart: false
                         }}
                     />

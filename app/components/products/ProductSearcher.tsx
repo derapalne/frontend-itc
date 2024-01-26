@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { SearchFilter } from "../../interfaces/Filter";
 import { Brand as IBrand } from "../../interfaces/Brand";
 import { IProductListing } from "../../interfaces/Product";
@@ -17,27 +18,27 @@ const fetchProductListing = async (value: string): Promise<IProductListing[]> =>
     return jsonResponse;
 };
 
+const defaultBrandValue = "Select a Brand";
+
 export default function ProductSearcher({
     params,
 }: {
-    params: { searchProductsWithFilters: Function };
+    params: { searchProductsWithFilters: Function; tagFilter: string };
 }) {
-    const defaultBrandValue = "Select a Brand";
-
     const [displayText, setDisplayText] = useState("All Products");
     const [searchValue, setSearchValue] = useState("");
     // This is for only sending data when Enter is pressed
     const [fetchNewProducts, setFetchNewProducts] = useState(true);
     // Initialize with default value
-    const [brands, setBrands] = useState<IBrand[]>([
-        { id: 0, name: defaultBrandValue, logo_url: "" },
-    ]);
+    const [brands, setBrands] = useState<IBrand[]>([{ id: 0, name: defaultBrandValue, logo_url: "" }]);
     // For filtering brands
     const [brandFilter, setBrandFilter] = useState(defaultBrandValue);
     // Product Suggestions
     const [productSuggestions, setProductSuggestions] = useState<IProductListing[]>([]);
     const [fetchNewSuggestions, setFetchNewSuggestions] = useState(false);
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0);
+
+    const [tagSearchValue, setTagSearchValue] = useState(params.tagFilter);
 
     const [showFilters, setShowFilters] = useState(false);
     const [showEnterButton, setShowEnterButton] = useState(false);
@@ -77,19 +78,25 @@ export default function ProductSearcher({
         setFetchNewProducts(true);
     }
 
+    function handleTagSearchValueChange(ev: React.ChangeEvent<HTMLInputElement>) {
+        setTagSearchValue(ev.currentTarget.value);
+        setFetchNewProducts(true);
+    }
+
     useEffect(() => {
         // For adding/removing filters to the search and sending the request
         // to the parent component
         if (fetchNewProducts) {
             const filters: SearchFilter[] = [];
             if (brandFilter) filters.push({ filter: "brand", value: brandFilter });
+            if (tagSearchValue) filters.push({ filter: "tag", value: tagSearchValue });
             params.searchProductsWithFilters(searchValue, filters);
             // Update display text
-            if (searchValue || brandFilter !== defaultBrandValue) {
+            if (searchValue || brandFilter !== defaultBrandValue || tagSearchValue) {
                 setDisplayText(
                     `${searchValue}${
                         brandFilter !== defaultBrandValue ? ` - By Brand: ${brandFilter}` : ""
-                    }`
+                    }${tagSearchValue ? ` - By tag: ${tagSearchValue}` : ""}`
                 );
             } else setDisplayText("All Products");
             setShowEnterButton(false);
@@ -113,7 +120,15 @@ export default function ProductSearcher({
         }
         if (fetchNewSuggestions) getSuggestions();
         if (searchValue.length === 0) setProductSuggestions([]);
-    }, [fetchNewProducts, params, searchValue, brandFilter, brands, fetchNewSuggestions]);
+    }, [
+        fetchNewProducts,
+        params,
+        searchValue,
+        brandFilter,
+        brands,
+        fetchNewSuggestions,
+        tagSearchValue,
+    ]);
 
     function handleShowFiltersButtonClick(ev: React.MouseEvent<HTMLButtonElement>) {
         setShowFilters(!showFilters);
@@ -178,31 +193,45 @@ export default function ProductSearcher({
                     </div>
                 </div>
                 {showFilters ? (
-                    <div className="mt-2">
+                    <div className="mt-2 mx-auto w-5/12">
                         <button
                             className="ml-4 p-1 text-sm rounded duration-300 bg-orange-400 hover:bg-orange-500 dark:hover:bg-orange-400 dark:bg-orange-500"
                             onClick={handleShowFiltersButtonClick}
                         >
                             Hide Filters
                         </button>
-                        <label className="ml-2 opacity-60" htmlFor="brand">
-                            Brand:
-                        </label>
-                        <select
-                            className="mx-auto bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
-                            name="brand"
-                            value={brandFilter}
-                            onChange={handleBrandNameChange}
-                        >
-                            {brands &&
-                                brands.map((b) => {
-                                    return (
-                                        <option key={b.id} value={b.name}>
-                                            {b.name}
-                                        </option>
-                                    );
-                                })}
-                        </select>
+                        <div className="grid grid-cols-2">
+                            <label className="mx-2 opacity-60" htmlFor="brand">
+                                Brand:
+                            </label>
+                            <select
+                                className="mx-auto bg-stone-100 dark:bg-stone-900 border-2 border-stone-100 border-b-stone-300 dark:border-stone-900 dark:border-b-stone-700"
+                                name="brand"
+                                value={brandFilter}
+                                onChange={handleBrandNameChange}
+                            >
+                                {brands &&
+                                    brands.map((b) => {
+                                        return (
+                                            <option key={b.id} value={b.name}>
+                                                {b.name}
+                                            </option>
+                                        );
+                                    })}
+                            </select>
+                        </div>
+                        <div className="grid grid-cols-2">
+                            <label className="mx-2 opacity-60" htmlFor="tag">
+                                Tag:
+                            </label>
+                            <input
+                                className="bg-stone-100 dark:bg-stone-900 focus-visible:border-0"
+                                name="tag"
+                                type="text"
+                                value={tagSearchValue}
+                                onChange={handleTagSearchValueChange}
+                            />
+                        </div>
                     </div>
                 ) : (
                     <button

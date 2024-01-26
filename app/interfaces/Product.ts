@@ -1,4 +1,5 @@
 import { Brand } from "./Brand";
+import { ITag } from "./Tag";
 import { IUser } from "./User";
 
 export interface CreateProduct {
@@ -7,6 +8,7 @@ export interface CreateProduct {
     description: string;
     price: number;
     brand_id: number;
+    tag_ids?: number[];
 }
 
 export interface UpdateProduct {
@@ -17,6 +19,7 @@ export interface UpdateProduct {
     price: number;
     brand_id: number;
     brand?: Brand;
+    tag_ids?: number[];
 }
 
 export interface Product {
@@ -30,6 +33,7 @@ export interface Product {
     creator_user_id: number;
     user: IUser;
     is_on_cart: boolean;
+    tags: ITag[];
 }
 
 export interface IProductListing {

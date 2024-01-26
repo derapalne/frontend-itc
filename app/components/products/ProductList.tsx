@@ -6,6 +6,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import ProductSearcher from "./ProductSearcher";
 import { SearchFilter } from "../../interfaces/Filter";
+import { useSearchParams } from "next/navigation";
 
 const fetchItems = async (): Promise<IProduct[]> => {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/`);
@@ -19,8 +20,8 @@ const fetchItemsWithFilters = async (
 ): Promise<IProduct[]> => {
     let additionalFilters = "";
     filters?.forEach((f) => {
-        if (f.filter === "brand" && f.value !== "Select a Brand")
-            additionalFilters += "&b=" + f.value;
+        if (f.filter === "brand" && f.value !== "Select a Brand") additionalFilters += "&b=" + f.value;
+        if (f.filter === "tag") additionalFilters += `&t=${f.value}`;
     });
     const response = await fetch(
         `${process.env["NEXT_PUBLIC_BACKEND_URL"]}/products/?n=${searchValue}&d=${searchValue}${additionalFilters}`
@@ -30,6 +31,10 @@ const fetchItemsWithFilters = async (
 };
 
 export default function ProductList() {
+    const urlParams = useSearchParams();
+
+    const [tagFilter, setTagFilter] = useState(urlParams.get("tag"));
+
     const [isLoading, setIsLoading] = useState(true);
     const [errorFetching, setErrorFetching] = useState(false);
     const [usingFilters, setUsingFilters] = useState(false);
@@ -82,7 +87,10 @@ export default function ProductList() {
     return (
         <div className="min-h-screen">
             <ProductSearcher
-                params={{ searchProductsWithFilters: getItemsWithFilters }}
+                params={{
+                    searchProductsWithFilters: getItemsWithFilters,
+                    tagFilter: tagFilter ? tagFilter : "",
+                }}
             ></ProductSearcher>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-9/12 sm:w-11/12 pt-4 mx-auto">
                 {(!products || products.length === 0) && (
@@ -116,6 +124,7 @@ export default function ProductList() {
                                 brand: p.brand,
                                 creator_user_id: p.creator_user_id,
                                 user: p.user,
+                                tags: p.tags,
                                 is_on_cart: false,
                             }}
                         />

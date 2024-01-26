@@ -7,6 +7,7 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import { UserData } from "../../interfaces/UserData";
 import Link from "next/link";
+import ProductTag from "../tags/ProductTag";
 
 async function addProductToCart(productId: number, accessToken: string) {
     const response = await fetch(`${process.env["NEXT_PUBLIC_BACKEND_URL"]}/carts/`, {
@@ -33,7 +34,7 @@ export default function Product({ params }: { params: IProduct }) {
     const [productAddedToCart, setProductAddedToCart] = useState(false);
 
     // Traer data de productos de los params y manejar en caso de que no haya Brand
-    const { id, name, description, image_url, price, user, is_on_cart } = params;
+    const { id, name, description, image_url, price, user, is_on_cart, tags } = params;
     let brand: IBrand;
     if (!params.brand) brand = { id: 0, name: "", logo_url: "" };
     else brand = params.brand;
@@ -131,6 +132,14 @@ export default function Product({ params }: { params: IProduct }) {
             ) : (
                 <></>
             )}
+            <div className="m-8 grid grid-cols-6 md:grid-cols-8 items-center text-sm">
+                <span className="col-span-1">Tags:</span>
+                <div className="col-span-7 flex flex-wrap">
+                    {tags.map((t) => (
+                        <ProductTag key={t.id} params={t} />
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
